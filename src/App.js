@@ -1,24 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SideBar from './Components/SideBar';
+import Home from './Components/Home';
+import Clients from './Components/Clients';
+import Users from './Components/Users';
+import Contratos from './Components/Contratos';
+
+
+const NAV_LINKS = [
+  { name: "Home", path: "/home" },
+  { name: "Usuários", path: "/usuarios" },
+  { name: "Clientes", path: "/clientes" },
+  { name: "Contratos", path: "/contratos" },
+  { name: "Rel. de tokens a enviar", path: "/reltokens" },
+  { name: "Depósitos", path: "/depositos" },
+  { name: "Saques", path: "/saques" },
+  { name: "Configurações", path: "/configuracoes" },
+  { name: "Documentos", path: "/documentos" },
+  { name: "Notícias", path: "/noticias" }
+
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <SideBar NAV_LINKS={NAV_LINKS} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/clientes" element={<Clients />} />
+          <Route path="/usuarios" element={<Users />} />
+          <Route path="/contratos" element={<Contratos />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
