@@ -1,14 +1,19 @@
-// Components/SideBar.js
-
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { NavLink } from 'react-router-dom'; // Importe NavLink para criar links de navegação
+import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux'; // Importe useDispatch para despachar actions
+import { logoutUser } from '../redux/actions'; // Importe a action de logout
 
 export default function SideBar({ NAV_LINKS }) {
   const [expanded, setExpanded] = useState(false);
+  const dispatch = useDispatch(); // Obtenha a função dispatch do Redux
 
   const toggleSidebar = () => {
     setExpanded(!expanded);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser()); // Dispara a action de logout
   };
 
   return (
@@ -38,7 +43,7 @@ export default function SideBar({ NAV_LINKS }) {
                 ))}
               </NavItemsContainer>
             </NavItemsWrapper>
-            <NavFooter>FOOTER</NavFooter>
+            <NavFooter onClick={handleLogout}>LOGOUT</NavFooter> {/* Adiciona o onClick para chamar handleLogout */}
           </>
         )}
       </SideBarContainer>
@@ -142,6 +147,7 @@ const NavFooter = styled.div`
   justify-content: center;
   color: white;
   box-sizing: border-box;
+  cursor: pointer;
 `;
 
 const ToggleButton = styled.button`

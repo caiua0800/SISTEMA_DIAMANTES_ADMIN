@@ -7,8 +7,11 @@ import Users from './Components/Users';
 import Contratos from './Components/Contratos';
 import Depositos from './Components/Depositos';
 import Login from './Components/Login';
-import { useSelector, useDispatch } from 'react-redux';
-import rootReducer from './redux/root-reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
+import store from './redux/store'; // Import your Redux store
+import { useEffect } from 'react';
+import { loginUser } from './redux/actions';
 
 const NAV_LINKS = [
   { name: "Home", path: "/home" },
@@ -23,25 +26,49 @@ const NAV_LINKS = [
 ];
 
 function App() {
+  const currentUser = useSelector(state => state.userReducer.currentUser);
+  const dispatch = useDispatch();
 
-  const { currentUser } = useSelector(rootReducer => rootReducer.userReducer);
-  
+  useEffect(() => {
+
+    if (!currentUser && localStorage.getItem('user')) {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      dispatch(loginUser(storedUser.EMAIL, storedUser.PASS));
+    }
+  }, [currentUser, dispatch]);
+
+  console.log(currentUser);
 
   return (
     <Router>
       <div className="App">
-        <SideBar NAV_LINKS={NAV_LINKS} />
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/clientes" element={<Clients />} />
-          <Route path="/usuarios" element={<Users />} />
-          <Route path="/contratos" element={<Contratos />} />
-          <Route path="/depositos" element={<Depositos />} />
-        </Routes>
+        {currentUser ? (
+          <>
+            <SideBar NAV_LINKS={NAV_LINKS} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/clientes" element={<Clients />} />
+              <Route path="/usuarios" element={<Users />} />
+              <Route path="/contratos" element={<Contratos />} />
+              <Route path="/depositos" element={<Depositos />} />
+            </Routes>
+          </>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Login />} />
+          </Routes>
+        )}
       </div>
     </Router>
   );
 }
 
-export default App;
+function Root() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
+
+export default Root;

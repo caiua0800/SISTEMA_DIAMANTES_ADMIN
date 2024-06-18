@@ -12,7 +12,6 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
 
-    console.log(currentUser);
 
     const handleLoginClick = () => {
         dispatch(loginUser(email, pass));
