@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import Clients from './Components/Clients';
 import Users from './Components/Users';
 import Contratos from './Components/Contratos';
+import Depositos from './Components/Depositos';
 
 
 const NAV_LINKS = [
@@ -12,7 +13,6 @@ const NAV_LINKS = [
   { name: "Usuários", path: "/usuarios" },
   { name: "Clientes", path: "/clientes" },
   { name: "Contratos", path: "/contratos" },
-  { name: "Rel. de tokens a enviar", path: "/reltokens" },
   { name: "Depósitos", path: "/depositos" },
   { name: "Saques", path: "/saques" },
   { name: "Configurações", path: "/configuracoes" },
@@ -32,6 +32,7 @@ function App() {
           <Route path="/clientes" element={<Clients />} />
           <Route path="/usuarios" element={<Users />} />
           <Route path="/contratos" element={<Contratos />} />
+          <Route path="/depositos" element={<Depositos />} />
         </Routes>
       </div>
     </Router>

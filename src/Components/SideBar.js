@@ -13,14 +13,15 @@ export default function SideBar({ NAV_LINKS }) {
 
   return (
     <SideBarAbsolute>
+      <ToggleButton onClick={toggleSidebar}>
+        <ArrowIcon
+          src="https://firebasestorage.googleapis.com/v0/b/white-lable-528b0.appspot.com/o/assets%2Fmenu-icon-blue.png?alt=media&token=7450779f-3169-436f-9076-fa5a36540c67"
+          expanded={expanded}
+        />
+        {expanded ? "" : <VerticalText>SideBar</VerticalText>}
+      </ToggleButton>
       <SideBarContainer expanded={expanded}>
-        <ToggleButton onClick={toggleSidebar}>
-          <ArrowIcon
-            src="https://firebasestorage.googleapis.com/v0/b/white-lable-528b0.appspot.com/o/assets%2Farrow-right-svgrepo-com.png?alt=media&token=0c7997e8-f75a-4ff8-b6fb-5c7bfc94ee34"
-            expanded={expanded}
-          />
-          {expanded ? "" : <VerticalText>SideBar</VerticalText>}
-        </ToggleButton>
+
         {expanded && (
           <>
             <LogoContainer>
@@ -47,34 +48,39 @@ export default function SideBar({ NAV_LINKS }) {
 
 const SideBarAbsolute = styled.div`
   position: fixed;
+  z-index: 999;
   top: 0;
   left: 0;
 `;
 
 const SideBarContainer = styled.div`
-  background-color: #233142;
-  width: ${({ expanded }) => (expanded ? "350px" : "80px")};
-  height: 100vh;
+  background-color: #222831;
+  width: ${({ expanded }) => (expanded ? "350px" : "0px")};
+  height: calc(100vh - 50px);
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   overflow: hidden;
   transition: width 0.3s ease;
   position: relative;
-  z-index: 999;
+
+  box-shadow: 2px 0px 2px rgba(0,0,0,0.6);
 `;
 
 const LogoContainer = styled.div`
   width: 100%;
-  background: #455d7a;
+  background: #222831;
   height: 80px;
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
   align-items: center;
 `;
 
 const LogoText = styled.span`
   color: #e3e3e3;
   font-size: 24px;
+  box-sizing: border-box;
 `;
 
 const NavItemsWrapper = styled.div`
@@ -82,6 +88,7 @@ const NavItemsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-sizing: border-box;
 `;
 
 const NavItemsContainer = styled.div`
@@ -89,30 +96,39 @@ const NavItemsContainer = styled.div`
   flex-direction: column;
   gap: 3px;
   align-items: center;
+  box-sizing: border-box;
 `;
 
 const NavItem = styled.div`
   width: 100%;
   height: 50px;
-  background: #e3e3e3;
+  background: #f2f2f2;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 0.3s, transform 0.3s;
   cursor: pointer;
+  box-sizing: border-box;
 
   a {
     text-decoration: none;
-    color: black;
+    color: rgba(0,0,0,0.6);
+    font-weight: 600;
     width: 100%;
+    font-size: 18px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+
+      &:hover {
+        color: black;
+      }
   }
 
   &:hover {
-    background: #e3e3e3;
+    background: #f96d00;
+    color: rgba(0,0,0,1);
     transform: scale(1.05);
   }
 `;
@@ -120,17 +136,19 @@ const NavItem = styled.div`
 const NavFooter = styled.div`
   width: 100%;
   height: 80px;
-  background-color: #f95959;
+  background-color: #393e46;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  box-sizing: border-box;
 `;
 
 const ToggleButton = styled.button`
   width: 100%;
   height: 50px;
-  background-color: #e3e3e3;
+  background-color: #393e46;
+  box-shadow: 2px 0px 2px rgba(0,0,0,0.6);
   color: #233142;
   font-weight: 600;
   border: none;
@@ -165,7 +183,7 @@ const VerticalText = styled.span`
   font-size: 28px;
   text-align: center;
   white-space: nowrap;
-  color: #e3e3e3;
+  color: rgba(0,0,0,0);
   position: absolute;
   top: 50%;
   left: 50%;

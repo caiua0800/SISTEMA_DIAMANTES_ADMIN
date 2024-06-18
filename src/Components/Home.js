@@ -21,26 +21,33 @@ export default function Home() {
 
 const HomeContainer = styled.div`
     width: 100%;
-    background-color: rgba(228, 244, 250, 1);
+    background-color: #222831;
     height: 100vh;
     overflow-y: scroll;
-    padding-left: 120px;
     padding-top: 40px;
     display: flex;
-    justify-content: start;
+    justify-content: center;
+    align-items: start;
     box-sizing: border-box;
+
+    @media (max-width: 920px){
+        padding: 80px 20px;
+    }
 `;
 
 const HomeContent = styled.div`
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+
 `;
 
 const HomeOptions = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: center;
+    width: max-content;
     gap: 10px;
 `;
 
@@ -58,5 +65,9 @@ const Option = styled.div`
 
     &:hover{
         transform: scale(1.05);
+    }
+
+    @media (max-width: 920px){
+        width: 100%;
     }
 `;

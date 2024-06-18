@@ -1,11 +1,9 @@
-// Users.js
-
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
-export default function Clientes() {
+export default function Depositos() {
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState('');
 
@@ -14,11 +12,10 @@ export default function Clientes() {
             const querySnapshot = await getDocs(collection(db, 'USERS'));
             let userList = [];
             querySnapshot.forEach((doc) => {
-                // Para cada documento, extrair os campos NAME, CPF e CONTACT
                 const user = {
-                    ID: doc.id, // ID do documento
+                    ID: doc.id,
                     NAME: doc.data().NAME,
-                    CPF: formatCPF(doc.data().CPF), // Formata o CPF
+                    CPF: formatCPF(doc.data().CPF),
                     CONTACT: doc.data().CONTACT,
                     EMAIL: doc.data().EMAIL
                 };
@@ -26,7 +23,7 @@ export default function Clientes() {
             });
 
             setUsers(userList);
-            console.log(userList)
+            console.log(userList);
         } catch (error) {
             console.error("Error getting users:", error);
         }
@@ -46,13 +43,13 @@ export default function Clientes() {
     };
 
     return (
-        <ClientsContainer>
-            <ClientFirstContent>
-                <AreaTitle>CLIENTES</AreaTitle>
-                <AddClient>+ ADICIONAR CLIENTE</AddClient>
-            </ClientFirstContent>
+        <DepositosContainer>
+            <DepositosFirstContent>
+                <AreaTitle>DEPÓSITOS</AreaTitle>
+                <AddDepositos>+ REALIZAR NOVO DEPÓSITO</AddDepositos>
+            </DepositosFirstContent>
 
-            <Clients>
+            <DepositosContent>
                 <SearchBar>
                     <input
                         value={search}
@@ -62,67 +59,65 @@ export default function Clientes() {
                     />
                 </SearchBar>
 
-                <ClientsTable>
+                <DepositosTable>
                     <TableContainer>
                         <Table>
                             <TableHeader>
                                 <TableRow>
                                     <TableHeaderCell>ID</TableHeaderCell>
-                                    <TableHeaderCell>DATA CAD.</TableHeaderCell>
-                                    <TableHeaderCell>IMG.</TableHeaderCell>
-                                    <TableHeaderCell>NOME</TableHeaderCell>
-                                    <TableHeaderCell>E-MAIL</TableHeaderCell>
+                                    <TableHeaderCell>CLIENTE</TableHeaderCell>
                                     <TableHeaderCell>CELULAR</TableHeaderCell>
-                                    <TableHeaderCell>TOTAL GANHO</TableHeaderCell>
-                                    <TableHeaderCell>OPÇÕES</TableHeaderCell>
+                                    <TableHeaderCell>DATA SOLICITAÇÃO</TableHeaderCell>
+                                    <TableHeaderCell>PRAZO DE VALIDAÇÃO</TableHeaderCell>
+                                    <TableHeaderCell>VALOR</TableHeaderCell>
+                                    <TableHeaderCell>STATUS</TableHeaderCell>
+                                    <TableHeaderCell>AÇÕES</TableHeaderCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {filteredClients.map((user, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{user.ID}</TableCell>
-                                        <TableCell>00/00/0000</TableCell>
-                                        <TableCell>
-                                            <ImgClient>s</ImgClient>
-                                        </TableCell>
                                         <TableCell>{user.NAME}</TableCell>
+                                        <TableCell>{user.CONTACT}</TableCell>
                                         <TableCell>{user.EMAIL}</TableCell>
                                         <TableCell>{user.CONTACT}</TableCell>
                                         <TableCell>R$ 00,00</TableCell>
+                                        <TableCell>{index + 1}</TableCell>
                                         <TableCell>{index + 1}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </ClientsTable>
-            </Clients>
-        </ClientsContainer>
+                </DepositosTable>
+            </DepositosContent>
+        </DepositosContainer>
     );
 }
 
-const ClientsContainer = styled.div`
+const DepositosContainer = styled.div`
     width: 100%;
     height: 100vh;
     overflow:hidden;
     box-sizing: border-box;
-    padding: 40px 40px;
-    background-color: rgba(22, 22, 22, 1);
-    color: #f2f2f2;
+    padding: 40px 0px;
+    background-color: #22313f;
+    color: #f1f1f1;
 
     @media (max-width: 915px){
         padding: 40px 20px;
     }
 `;
 
-const ClientFirstContent = styled.div`
+const DepositosFirstContent = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
     box-sizing: border-box;
     align-items: center;
-
+    padding: 0 40px;
     @media (max-width: 915px){
         flex-direction: column;
         gap: 10px;
@@ -135,24 +130,25 @@ const AreaTitle = styled.h1`
     margin: 0;
 `;
 
-const AddClient = styled.button`
+const AddDepositos = styled.button`
     padding: 10px 20px;
     box-sizing: border-box;
-    background-color: #f96d00;
+    background-color: #49beb7;
     color: #f2f2f2;
     border: 0;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
     cursor: pointer;
     transition: .3s;
+
     &:hover{
-        background-color: #393e46;
-        color: #f96d00;
+        background-color: #085f63;
+        color: #f1f1f1;
     }
 `;
 
-const Clients = styled.div`
+const DepositosContent = styled.div`
     width: 100%;
-    background-color: #393e46; 
+    background-color: #22313f; 
     box-sizing: border-box;
     margin-top: 50px;
     padding-bottom: 30px;
@@ -171,11 +167,12 @@ const SearchBar = styled.div`
         box-sizing: border-box;
         width: 100%;
         height: 40px;
-        background-color: #222831;
+        background-color: #34495e;
+        font-weight: 600;
         border: 0;
         padding-left: 30px;
         box-shadow: 1px 1px 2px black;
-        color: #f2f2f2;
+        color: #f1f1f1;
         text-transform: uppercase;
     }
 
@@ -184,14 +181,14 @@ const SearchBar = styled.div`
     }
 `;
 
-const ClientsTable = styled.div`
+const DepositosTable = styled.div`
     width: 100%;
-    background-color: #393e46; 
+    background-color: #22313f; 
     box-sizing: border-box;
     padding: 0 30px 0 30px;
     margin-top: 30px;
-    min-height: 300px;
-    max-height: 500px;
+    min-height: 600px;
+    max-height: 600px;
     overflow-y: hidden;
     overflow-x: hidden;
 
@@ -210,8 +207,13 @@ const TableContainer = styled.div`
     width: 100%;
     box-sizing: border-box;    
     overflow-y: scroll;
-    overflow-x: scroll;
+    overflow-x: hidden;
 
+    @media (max-width: 915px){
+        
+        overflow-y: scroll;
+        overflow-x: scroll;
+    }
 `;
 
 const Table = styled.table`
@@ -232,22 +234,22 @@ const TableHeader = styled.thead`
 `;
 
 const TableRow = styled.tr`
-    background-color: #393e46;
-    color: #f2f2f2;
+    background-color: #22313f;
+    color: #8dc6ff;
     &:nth-child(even) {
-        color: #222831;
-        background-color: rgba(57, 62, 70, 0.8);
+        color: #e4f1fe;
+        background-color: #34495e;
     }
 `;
 
 const TableHeaderCell = styled.th`
     padding: 15px;
     text-align: center;
-    color: #f2f2f2;
-    background-color: #222831;
+    color: #f1f1f1;
+    background-color: #34495e;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    min-width: 100px; /* Ajuste conforme necessário */
-    white-space: nowrap;
+    min-width: 100px;
+    // white-space: nowrap;
 `;
 
 const TableBody = styled.tbody`
@@ -259,16 +261,5 @@ const TableCell = styled.td`
     text-align: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     min-width: 100px; /* Ajuste conforme necessário */
-    white-space: nowrap;
-`;
-
-const ImgClient = styled.div`
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f96d00;
+    // white-space: nowrap;
 `;

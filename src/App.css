@@ -1,9 +1,10 @@
 
-
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 .App {
   text-align: center;
   background-color: rgb(0, 0, 0);
   position: relative;
+  font-family: "Manrope", sans-serif;
   overflow: hidden;
 }
 
