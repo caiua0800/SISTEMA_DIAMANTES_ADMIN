@@ -6,7 +6,9 @@ import Clients from './Components/Clients';
 import Users from './Components/Users';
 import Contratos from './Components/Contratos';
 import Depositos from './Components/Depositos';
-
+import Login from './Components/Login';
+import { useSelector, useDispatch } from 'react-redux';
+import rootReducer from './redux/root-reducer';
 
 const NAV_LINKS = [
   { name: "Home", path: "/home" },
@@ -18,16 +20,19 @@ const NAV_LINKS = [
   { name: "Configurações", path: "/configuracoes" },
   { name: "Documentos", path: "/documentos" },
   { name: "Notícias", path: "/noticias" }
-
 ];
 
 function App() {
+
+  const { currentUser } = useSelector(rootReducer => rootReducer.userReducer);
+  
+
   return (
     <Router>
       <div className="App">
         <SideBar NAV_LINKS={NAV_LINKS} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/clientes" element={<Clients />} />
           <Route path="/usuarios" element={<Users />} />
