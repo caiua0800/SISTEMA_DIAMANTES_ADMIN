@@ -1,40 +1,97 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from 'react-redux';
+import { getDepositos } from '../redux/actions';
+import { formatNumber } from "./ASSETS/assets";
 
 export default function Contratos() {
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState(''); // Estado para filtro por status
+    const [dataInicialCompraFilter, setDataInicialCompraFilter] = useState(''); // Estado para filtro por data inicial de compra
+    const [dataFinalCompraFilter, setDataFinalCompraFilter] = useState(''); // Estado para filtro por data final de compra
+    const [total, setTotal] = useState(0);
+    const [totalTaxa, setTotalTaxa] = useState(0);
+    const [totalCOINS, setTotalCOINS] = useState(0);
+    const [totalGanhos, setTotalGanhos] = useState(0);
+    const taxa = 0.3;
+    const coinAtualPrice = 158.36;
+    const dispatch = useDispatch();
+    const depositos = useSelector((state) => state.DepositosReducer.depositos);
+
+    useEffect(() => {
+        dispatch(getDepositos());
+    }, [dispatch]);
+
+
+    const filteredClients = depositos.filter(user => {
+        const matchesSearch = (user.NAME && user.NAME.toUpperCase().includes(search.toUpperCase())) ||
+                             (user.ID && user.ID.toUpperCase().includes(search.toUpperCase()));
+        const matchesStatus = statusFilter === '' ||
+                              (statusFilter === 'PAGOS' && user.STATUS) ||
+                              (statusFilter === 'NÃO PAGOS' && !user.STATUS);
+        const matchesDataInicial = dataInicialCompraFilter === '' ||
+                                   (user.PURCHASEDATE && user.PURCHASEDATE >= dataInicialCompraFilter);
+        const matchesDataFinal = dataFinalCompraFilter === '' ||
+                                 (user.PURCHASEDATE && user.PURCHASEDATE <= dataFinalCompraFilter);
+        return matchesSearch && matchesStatus && matchesDataInicial && matchesDataFinal;
+    });
+
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value);
+    };
+    const handleStatusChange = (e) => {
+        setStatusFilter(e.target.value);
+    };
+    const handleDataInicialChange = (e) => {
+        setDataInicialCompraFilter(e.target.value);
+    };
+    const handleDataFinalChange = (e) => {
+        setDataFinalCompraFilter(e.target.value);
+    };
+
+    useEffect(() => {
+        let sum = 0;
+        let sum2 = 0;
+        let sum3 = 0;
+        filteredClients.forEach(user => {
+            if (user.STATUS) {
+                sum += user.TOTALSPENT;
+                sum2 += ((user.TOTALSPENT*taxa) + user.TOTALSPENT)
+                sum3 += user.COINS;
+            }
+        });
+        setTotal(sum);
+        setTotalTaxa(sum2);
+        setTotalCOINS(sum3);
+    }, [filteredClients]);
 
     return (
         <ContratosContainer>
-
             <HomeInitialContent>
                 <PartTitle>Painel do Investidor - Modelo de Sistema</PartTitle>
-
                 <Boxes>
                     <Box bgColor="#f2f2f2">
-                        <BoxContent >
+                        <BoxContent>
                             <BoxTitle>VALOR TOTAL</BoxTitle>
-
-                            <span>R$ 0000,00000</span>
+                            <span>$ {formatNumber(total)}</span>
                         </BoxContent>
                     </Box>
                     <Box bgColor="#f2f2f2">
                         <BoxContent>
                             <BoxTitle>VALOR TOTAL COM TAXA</BoxTitle>
-                            <span>R$ 0000,00000</span>
-
+                            <span>$ {formatNumber(totalTaxa)}</span>
                         </BoxContent>
                     </Box>
                     <Box bgColor="#f2f2f2">
                         <BoxContent>
-                            <BoxTitle>QUANTIDADE TODAL DE TOKENS</BoxTitle>
-                            <span>R$ 0000,00000</span>
-
+                            <BoxTitle>QUANTIDADE TOTAL DE TOKENS</BoxTitle>
+                            <span>${ formatNumber(totalCOINS)}</span>
                         </BoxContent>
                     </Box>
                     <Box bgColor="#f2f2f2">
                         <BoxContent>
                             <BoxTitle>TOTAL DE GANHOS</BoxTitle>
-                            <span>R$ 0000,00000</span>
+                            <span>R$ 1.536.841,27</span>
                         </BoxContent>
                     </Box>
                 </Boxes>
@@ -42,29 +99,29 @@ export default function Contratos() {
 
             <Contracts>
                 <ContractsTitle>CONTRATOS</ContractsTitle>
-                <SearchAreaContent bgColor="rgba(152, 213, 235, 1)">
+                <SearchAreaContent>
                     <SearchArea>
                         <FilterDiv>
                             <h4>STATUS</h4>
-                            <select>
-                                <option>TODOS</option>
-                                <option>PAGOS</option>
-                                <option>NÃO PAGOS</option>
+                            <select onChange={handleStatusChange}>
+                                <option value="">TODOS</option>
+                                <option value="PAGOS">PAGOS</option>
+                                <option value="NÃO PAGOS">NÃO PAGOS</option>
                             </select>
                         </FilterDiv>
 
                         <FilterDiv>
                             <h4>DATA INICIAL DA COMPRA</h4>
-                            <input type="date" />
+                            <input type="date" onChange={handleDataInicialChange} />
                         </FilterDiv>
 
                         <FilterDiv>
                             <h4>DATA FINAL DA COMPRA</h4>
-                            <input type="date" />
+                            <input type="date" onChange={handleDataFinalChange} />
                         </FilterDiv>
                     </SearchArea>
                     <SecondSearchBar>
-                        <input type="text" placeholder="Nome Do Cliente" />
+                        <input type="text" placeholder="Nome Do Cliente" onChange={handleSearchChange} />
                     </SecondSearchBar>
                 </SearchAreaContent>
             </Contracts>
@@ -75,27 +132,29 @@ export default function Contratos() {
                         <TableRow>
                             <TableHeaderCell>ID</TableHeaderCell>
                             <TableHeaderCell>CLIENTE</TableHeaderCell>
-                            <TableHeaderCell>DATA COMPRA</TableHeaderCell>
+                            <TableHeaderCell>DATA DE COMPRA</TableHeaderCell>
+                            <TableHeaderCell>QUANTIDADE COINS</TableHeaderCell>
                             <TableHeaderCell>VALOR UNI.</TableHeaderCell>
                             <TableHeaderCell>VALOR TOTAL</TableHeaderCell>
-                            <TableHeaderCell>VALOR TOTAL + TAXA</TableHeaderCell>
+                            <TableHeaderCell>TOTAL + TAXA</TableHeaderCell>
                             <TableHeaderCell>TOTAL GANHO</TableHeaderCell>
-                            <TableHeaderCell>RENDENDO ATÉ</TableHeaderCell>
+                            {/* <TableHeaderCell>RENDENDO ATÉ</TableHeaderCell> */}
                             <TableHeaderCell>STATUS</TableHeaderCell>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {[...Array(50)].map((_, index) => (
+                        {filteredClients.map((user, index) => (
                             <TableRow key={index}>
-                                <TableCell>Valor {index + 1}</TableCell>
-                                <TableCell>Descrição {index + 1}</TableCell>
-                                <TableCell>Data {index + 1}</TableCell>
-                                <TableCell>Status {index + 1}</TableCell>
-                                <TableCell>Cliente {index + 1}</TableCell>
-                                <TableCell>Detalhes {index + 1}</TableCell>
-                                <TableCell>Ações {index + 1}</TableCell>
-                                <TableCell>DATA {index + 1}</TableCell>
-                                <TableCell>DATA {index + 1}</TableCell>
+                                <TableCell>{user.IDCOMPRA}</TableCell>
+                                <TableCell>{user.NAME}</TableCell>
+                                <TableCell>{user.PURCHASEDATE}</TableCell>
+                                <TableCell>{user.COINS}</TableCell>
+                                <TableCell>$ {user.COINVALUE}</TableCell>
+                                <TableCell>$ {formatNumber(user.TOTALSPENT)}</TableCell>
+                                <TableCell>$ {formatNumber(user.TOTALSPENT) + 50}</TableCell>
+                                <TableCell>$ {formatNumber((user.COINS * coinAtualPrice) - user.TOTALSPENT)}</TableCell>
+                                {/* <TableCell>00/00/0000</TableCell> */}
+                                <TableCell>{user.STATUS ? 'ACEITO' : 'NEGADO'}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -103,8 +162,9 @@ export default function Contratos() {
             </TableContainer>
 
         </ContratosContainer>
-    )
+    );
 }
+
 
 const ContratosContainer = styled.div`
     width: 100%;
@@ -392,4 +452,11 @@ const TableCell = styled.td`
     padding: 15px; /* Ajuste o padding conforme necessário */
     text-align: center; /* Ajuste o alinhamento conforme necessário */
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    &:hover{
+        background-color: black;
+        cursor: pointer;
+        color: white;
+        transform: scale(1.1);
+    }
 `;

@@ -127,13 +127,13 @@ const NavItem = styled.div`
     justify-content: center;
 
       &:hover {
-        color: black;
+        color: rgba(255,255,255,1);
       }
   }
 
   &:hover {
-    background: #f96d00;
-    color: rgba(0,0,0,1);
+    background: #222831;
+    color: rgba(255,255,255,1);
     transform: scale(1.05);
   }
 `;

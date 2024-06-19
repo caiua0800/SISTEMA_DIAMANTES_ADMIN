@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import { loginUser } from './redux/actions';
 
 const NAV_LINKS = [
-  { name: "Home", path: "/home" },
+  { name: "Home", path: "/" },
   { name: "Usuários", path: "/usuarios" },
   { name: "Clientes", path: "/clientes" },
   { name: "Contratos", path: "/contratos" },
@@ -30,14 +30,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     if (!currentUser && localStorage.getItem('user')) {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       dispatch(loginUser(storedUser.EMAIL, storedUser.PASS));
     }
   }, [currentUser, dispatch]);
 
-  console.log(currentUser);
 
   return (
     <Router>
@@ -47,10 +45,12 @@ function App() {
             <SideBar NAV_LINKS={NAV_LINKS} />
             <Routes>
               <Route path="/" element={<Home />} />
+              {/* <Route path="/home" element={<Home />} /> */}
               <Route path="/clientes" element={<Clients />} />
               <Route path="/usuarios" element={<Users />} />
               <Route path="/contratos" element={<Contratos />} />
               <Route path="/depositos" element={<Depositos />} />
+              <Route path="/noticias" element={<Depositos />} />
             </Routes>
           </>
         ) : (

@@ -1,19 +1,45 @@
 import React from "react";
 import styled from "styled-components";
+import Grapth from './Grapth';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
     return (
         <HomeContainer>
             <HomeContent>
                 <HomeOptions>
-                    <Option color="rgba(16, 162, 222, 1)">Option 1</Option>
-                    <Option color="rgba(3, 76, 106, 1)">Option 2</Option>
-                    <Option color="rgba(18, 202, 30, 1)">Option 3</Option>
-                    <Option color="rgba(60, 26, 229, 1)">Option 4</Option>
-                    <Option color="rgba(26, 229, 212, 1)">Option 5</Option>
-                    <Option color="rgba(104, 8, 40, 1)">Option 6</Option>
-                    <Option color="rgba(143, 73, 232, 1)">Option 6</Option>
+                    <StyledLink to="/depositos">
+                        <Option color="#58afb8">DEPOSITOS</Option>
+                    </StyledLink>                    
+                    <StyledLink to="/">
+                        <Option color="#d2d2d2">HOME</Option>
+                    </StyledLink>
+                    <StyledLink to="/clientes">
+                        <Option color="#58afb8">CLIENTES</Option>
+                    </StyledLink>
+                    <StyledLink to="/usuarios">
+                        <Option color="#d2d2d2">USUÁRIOS</Option>
+                    </StyledLink>
+                    <StyledLink to="/contratos">
+                        <Option color="#58afb8">CONTRATOS</Option>
+                    </StyledLink>
+                    <StyledLink to="/saques">
+                        <Option color="#d2d2d2">SAQUES</Option>
+                    </StyledLink>
+                    <StyledLink to="/configuracoes">
+                        <Option color="#58afb8">CONFIGURAÇÕES</Option>
+                    </StyledLink>
+                    <StyledLink to="/documentos">
+                        <Option color="#d2d2d2">DOCUMENTOS</Option>
+                    </StyledLink>
+                    <StyledLink to="/noticias">
+                        <Option color="#58afb8">NOTÍCIAS</Option>
+                    </StyledLink>
                 </HomeOptions>
+
+                <GrapthContainer>
+                    <Grapth />
+                </GrapthContainer>
             </HomeContent>
         </HomeContainer>
     );
@@ -29,7 +55,7 @@ const HomeContainer = styled.div`
     justify-content: center;
     align-items: start;
     box-sizing: border-box;
-
+    overflow-x: hidden;
     @media (max-width: 920px){
         padding: 80px 20px;
     }
@@ -40,14 +66,22 @@ const HomeContent = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+`;
 
+const GrapthContainer = styled.div`
+    padding: 40px 30px;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 `;
 
 const HomeOptions = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    width: max-content;
+    width: 100%;
     gap: 10px;
 `;
 
@@ -70,4 +104,9 @@ const Option = styled.div`
     @media (max-width: 920px){
         width: 100%;
     }
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: inherit;
 `;

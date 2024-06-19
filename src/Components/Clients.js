@@ -2,48 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { formatCPF, getUsers } from "./ASSETS/assets";
 
 export default function Clientes() {
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState('');
 
-    const getUsers = async () => {
-        try {
-            const querySnapshot = await getDocs(collection(db, 'USERS'));
-            let userList = [];
-            querySnapshot.forEach((doc) => {
-                // Para cada documento, extrair os campos NAME, CPF e CONTACT
-                const user = {
-                    ID: doc.id, // ID do documento
-                    NAME: doc.data().NAME,
-                    CPF: formatCPF(doc.data().CPF), // Formata o CPF
-                    CONTACT: doc.data().CONTACT,
-                    EMAIL: doc.data().EMAIL
-                };
-                userList.push(user);
-            });
-
-            setUsers(userList);
-            console.log(userList)
-        } catch (error) {
-            console.error("Error getting users:", error);
-        }
-    };
-
     useEffect(() => {
-        getUsers();
+        getUsers(setUsers);
     }, []);
 
     const filteredClients = search.length > 0
         ? users.filter(user => user.NAME.includes(search.toUpperCase()))
         : users;
 
-    const formatCPF = (cpf) => {
-        cpf = cpf.replace(/\D/g, '');
-        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    };
 
     return (
         <ClientsContainer>

@@ -1,46 +1,41 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDepositos, setAceito } from '../redux/actions';
+import { addWeekToDateString, formatNumber } from "./ASSETS/assets";
 
 export default function Depositos() {
-    const [users, setUsers] = useState([]);
+
     const [search, setSearch] = useState('');
 
-    const getUsers = async () => {
-        try {
-            const querySnapshot = await getDocs(collection(db, 'USERS'));
-            let userList = [];
-            querySnapshot.forEach((doc) => {
-                const user = {
-                    ID: doc.id,
-                    NAME: doc.data().NAME,
-                    CPF: formatCPF(doc.data().CPF),
-                    CONTACT: doc.data().CONTACT,
-                    EMAIL: doc.data().EMAIL
-                };
-                userList.push(user);
-            });
-
-            setUsers(userList);
-            console.log(userList);
-        } catch (error) {
-            console.error("Error getting users:", error);
-        }
-    };
+    const dispatch = useDispatch();
+    const depositos = useSelector((state) => state.DepositosReducer.depositos);
 
     useEffect(() => {
-        getUsers();
-    }, []);
+        dispatch(getDepositos());
+    }, [dispatch]);
 
     const filteredClients = search.length > 0
-        ? users.filter(user => user.NAME.includes(search.toUpperCase()))
-        : users;
+        ? depositos.filter(user => (user.NAME && user.NAME.includes(search.toUpperCase())) ||
+            (user.ID && user.ID.includes(search.toUpperCase())))
+        : depositos;
 
-    const formatCPF = (cpf) => {
-        cpf = cpf.replace(/\D/g, '');
-        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+
+    const handleSetAceito = (userId, contratoId) => {
+        dispatch(setAceito(userId, contratoId, true));
+        dispatch(getDepositos())
     };
+
+    const handleSetNegado = (userId, contratoId) => {
+        dispatch(setAceito(userId, contratoId, false));
+        dispatch(getDepositos())
+    };
+
+    const reload_ico = 'https://firebasestorage.googleapis.com/v0/b/wldata.appspot.com/o/reload-svgrepo-com.png?alt=media&token=239c954a-c1fc-4829-839e-694b067a90f5';
+
+    const handleReload = () => {
+        dispatch(getDepositos());
+    }
 
     return (
         <DepositosContainer>
@@ -59,6 +54,10 @@ export default function Depositos() {
                     />
                 </SearchBar>
 
+                <ReloadData>
+                    <p onClick={handleReload}>RELOAD</p>
+                </ReloadData>
+
                 <DepositosTable>
                     <TableContainer>
                         <Table>
@@ -69,6 +68,7 @@ export default function Depositos() {
                                     <TableHeaderCell>CELULAR</TableHeaderCell>
                                     <TableHeaderCell>DATA SOLICITAÇÃO</TableHeaderCell>
                                     <TableHeaderCell>PRAZO DE VALIDAÇÃO</TableHeaderCell>
+                                    <TableHeaderCell>COINS</TableHeaderCell>
                                     <TableHeaderCell>VALOR</TableHeaderCell>
                                     <TableHeaderCell>STATUS</TableHeaderCell>
                                     <TableHeaderCell>AÇÕES</TableHeaderCell>
@@ -77,20 +77,22 @@ export default function Depositos() {
                             <TableBody>
                                 {filteredClients.map((user, index) => (
                                     <TableRow key={index}>
-                                        <TableCell>{user.ID}</TableCell>
+                                        <TableCell>{user.IDCOMPRA}</TableCell>
                                         <TableCell>{user.NAME}</TableCell>
                                         <TableCell>{user.CONTACT}</TableCell>
-                                        <TableCell>{user.EMAIL}</TableCell>
-                                        <TableCell>{user.CONTACT}</TableCell>
-                                        <TableCell>R$ 00,00</TableCell>
-                                        <TableCell userRef={user.ID}>{index + 1}</TableCell>
+                                        <TableCell>{user.PURCHASEDATE}</TableCell>
+                                        <TableCell>{addWeekToDateString(user.PURCHASEDATE)}</TableCell>
+                                        <TableCell>{formatNumber(user.COINS)}</TableCell>
+                                        <TableCell>$ {formatNumber(user.TOTALSPENT)}</TableCell>
+                                        <TableCell>{user.STATUS ? 'ACEITO' : 'NEGADO'}</TableCell>
                                         <TableCell>
                                             <OptionsButtons>
-                                                <button>x</button>
-                                                <button>#</button>
+                                                <button onClick={() => handleSetNegado(user.ID, user.IDCOMPRA)}>Negar</button>
+                                                <button onClick={() => handleSetAceito(user.ID, user.IDCOMPRA)}>Aceitar</button>
                                             </OptionsButtons>
                                         </TableCell>
                                     </TableRow>
+
                                 ))}
                             </TableBody>
                         </Table>
@@ -277,4 +279,17 @@ const OptionsButtons = styled.div`
     button{
         cursor: pointer;
     }
+`;
+
+const ReloadData = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: end;
+
+    p{
+        padding-right: 40px;
+        margin: 0;
+        cursor: pointer;
+    }
+
 `;
