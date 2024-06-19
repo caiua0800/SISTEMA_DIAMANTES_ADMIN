@@ -44,3 +44,7 @@ export const logoutUser = () => {
         }
     };
 };
+
+export const getData = () => {
+    
+}

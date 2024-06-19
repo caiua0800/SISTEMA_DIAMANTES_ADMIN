@@ -83,8 +83,13 @@ export default function Depositos() {
                                         <TableCell>{user.EMAIL}</TableCell>
                                         <TableCell>{user.CONTACT}</TableCell>
                                         <TableCell>R$ 00,00</TableCell>
-                                        <TableCell>{index + 1}</TableCell>
-                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell userRef={user.ID}>{index + 1}</TableCell>
+                                        <TableCell>
+                                            <OptionsButtons>
+                                                <button>x</button>
+                                                <button>#</button>
+                                            </OptionsButtons>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -262,4 +267,14 @@ const TableCell = styled.td`
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     min-width: 100px; /* Ajuste conforme necessário */
     // white-space: nowrap;
+`;
+
+const OptionsButtons = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+
+    button{
+        cursor: pointer;
+    }
 `;

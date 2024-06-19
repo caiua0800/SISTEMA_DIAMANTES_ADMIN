@@ -141,13 +141,20 @@ const NavItem = styled.div`
 const NavFooter = styled.div`
   width: 100%;
   height: 80px;
-  background-color: #393e46;
+  background-color: rgba(255, 3, 3, 0.8);
   display: flex;
   align-items: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 22px;
   justify-content: center;
-  color: white;
   box-sizing: border-box;
   cursor: pointer;
+  transition: .3s;
+
+  &:hover{
+    color: rgba(255, 255, 255, 1);
+
+  }
 `;
 
 const ToggleButton = styled.button`
