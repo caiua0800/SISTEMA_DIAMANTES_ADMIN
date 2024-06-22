@@ -84,7 +84,7 @@ export default function Depositos() {
                                         <TableCell>{addWeekToDateString(user.PURCHASEDATE)}</TableCell>
                                         <TableCell>{formatNumber(user.COINS)}</TableCell>
                                         <TableCell>$ {formatNumber(user.TOTALSPENT)}</TableCell>
-                                        <TableCell>{user.STATUS ? 'ACEITO' : 'NEGADO'}</TableCell>
+                                        <TableCell>{user.VISTO ? (user.STATUS ? 'ACEITO' : 'NEGADO') : 'PENDENTE'}</TableCell>
                                         <TableCell>
                                             <OptionsButtons>
                                                 <button onClick={() => handleSetNegado(user.ID, user.IDCOMPRA)}>Negar</button>
