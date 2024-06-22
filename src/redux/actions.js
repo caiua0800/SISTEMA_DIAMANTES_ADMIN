@@ -181,6 +181,8 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => 
                 return;
             }
 
+            let gotCoinsTransation = 0;
+
             const updatedSaques = userData.SAQUES.map(saque => {
 
                 if (saque.IDSAQUE === saqueId) {
@@ -189,13 +191,16 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => 
                     const mes = String(today.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
                     const ano = today.getFullYear();
                     const dataFormatada = `${dia}/${mes}/${ano}`;
+                    gotCoinsTransation = (parseFloat(saque.VALOR.replace('.', '').replace(',', '.')) / 158.20)
                     return { ...saque, APROVADO: aceito, PENDENTE: true, DATARECEBIMENTO: dataFormatada, DADOSRECEBIMENTO: methodPayment, OBS: obs }; // Define PENDENTE como true
                 }
                 return saque;
             });
 
-            // Atualiza o documento no Firestore com os novos dados do saque específico
-            await updateDoc(userDocRef, { SAQUES: updatedSaques });
+            const currentGotCoins = parseFloat(userData.GOTCOINS || '0');
+            const updatedGotCoins = (currentGotCoins + gotCoinsTransation).toFixed(2);
+
+            await updateDoc(userDocRef, { SAQUES: updatedSaques, GOTCOINS: updatedGotCoins.toString() });
 
             // Dispara uma ação Redux para indicar que o saque foi atualizado com sucesso
             dispatch({
