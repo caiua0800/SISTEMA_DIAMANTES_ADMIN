@@ -142,7 +142,7 @@ export const setAceito = (userId, contratoId, aceito) => {
             // Atualiza o array CONTRATOS para refletir o novo status
             const updatedContratos = userData.CONTRATOS.map(contrato => {
                 if (contrato.IDCOMPRA === contratoId) {
-                    return { ...contrato, STATUS: aceito };
+                    return { ...contrato, STATUS: aceito, VISTO: true };
                 }
                 return contrato;
             });
