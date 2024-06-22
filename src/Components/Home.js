@@ -26,19 +26,19 @@ export default function Home() {
                     <StyledLink to="/saques">
                         <Option color="#d2d2d2">SAQUES</Option>
                     </StyledLink>
-                    <StyledLink to="/configuracoes">
+                    {/* <StyledLink to="/configuracoes">
                         <Option color="#58afb8">CONFIGURAÇÕES</Option>
-                    </StyledLink>
-                    <StyledLink to="/documentos">
+                    </StyledLink> */}
+                    {/* <StyledLink to="/documentos">
                         <Option color="#d2d2d2">DOCUMENTOS</Option>
-                    </StyledLink>
-                    <StyledLink to="/noticias">
+                    </StyledLink> */}
+                    {/* <StyledLink to="/noticias">
                         <Option color="#58afb8">NOTÍCIAS</Option>
-                    </StyledLink>
+                    </StyledLink> */}
                 </HomeOptions>
 
                 <GrapthContainer>
-                    <Grapth />
+                    {/* <Grapth /> */}
                 </GrapthContainer>
             </HomeContent>
         </HomeContainer>

@@ -15,12 +15,13 @@ export function addWeekToDateString(dateString) {
 }
 
 // Função para formatar um número no formato brasileiro
-export const formatNumber = (number) => {
-    return number.toLocaleString('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+export const formatNumber = (value) => {
+    if (typeof value !== 'number' || isNaN(value)) {
+        return '0.00'; // Valor padrão caso o valor seja indefinido ou não seja um número
+    }
+    return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
+
 
 
 export const formatCPF = (cpf) => {
@@ -28,24 +29,42 @@ export const formatCPF = (cpf) => {
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 };
 
-export const getUsers = async (setUsers) => {
+export const getClients = async (setUsers) => {
     try {
         const querySnapshot = await getDocs(collection(db, 'USERS'));
         let userList = [];
+
         querySnapshot.forEach((doc) => {
-            // Para cada documento, extrair os campos NAME, CPF e CONTACT
+            const userData = doc.data();
+            let totalPago = 0;
+            let totalCoins = 0;
+
+            // Verifica se existe o campo CONTRATOS e se é um array
+            if (userData.CONTRATOS && Array.isArray(userData.CONTRATOS)) {
+                userData.CONTRATOS.forEach((contrato) => {
+                    // Verifica se STATUS é true antes de adicionar ao totalPago
+                    if (contrato.STATUS) {
+                        totalPago += contrato.TOTALSPENT || 0;
+                        totalCoins += contrato.COINS || 0;
+                    }
+                });
+            }
+
             const user = {
-                ID: doc.id, // ID do documento
-                NAME: doc.data().NAME,
-                CPF: formatCPF(doc.data().CPF), // Formata o CPF
-                CONTACT: doc.data().CONTACT,
-                EMAIL: doc.data().EMAIL
+                ID: doc.id,
+                NAME: userData.NAME,
+                CPF: formatCPF(userData.CPF),
+                CONTACT: userData.CONTACT,
+                EMAIL: userData.EMAIL,
+                TOTALPAGO: totalPago,
+                TOTALCOINS: totalCoins,
             };
+
             userList.push(user);
         });
 
         setUsers(userList);
-        console.log(userList)
+        console.log(userList);
     } catch (error) {
         console.error("Error getting users:", error);
     }

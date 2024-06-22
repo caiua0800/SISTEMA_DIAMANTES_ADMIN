@@ -65,6 +65,7 @@ export default function Contratos() {
         setTotalCOINS(sum3);
     }, [filteredClients]);
 
+
     return (
         <ContratosContainer>
             <HomeInitialContent>
@@ -85,7 +86,7 @@ export default function Contratos() {
                     <Box bgColor="#f2f2f2">
                         <BoxContent>
                             <BoxTitle>QUANTIDADE TOTAL DE TOKENS</BoxTitle>
-                            <span>${ formatNumber(totalCOINS)}</span>
+                            <span>{ parseInt(totalCOINS)}</span>
                         </BoxContent>
                     </Box>
                     <Box bgColor="#f2f2f2">
@@ -115,10 +116,10 @@ export default function Contratos() {
                             <input type="date" onChange={handleDataInicialChange} />
                         </FilterDiv>
 
-                        <FilterDiv>
+                        {/* <FilterDiv>
                             <h4>DATA FINAL DA COMPRA</h4>
                             <input type="date" onChange={handleDataFinalChange} />
-                        </FilterDiv>
+                        </FilterDiv> */}
                     </SearchArea>
                     <SecondSearchBar>
                         <input type="text" placeholder="Nome Do Cliente" onChange={handleSearchChange} />

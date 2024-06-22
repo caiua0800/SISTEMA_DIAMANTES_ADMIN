@@ -2,26 +2,32 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { formatCPF, getUsers } from "./ASSETS/assets";
+import { formatCPF, getClients, formatNumber } from "./ASSETS/assets";
 
 export default function Clientes() {
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState('');
+    const coinAtualPrice = 158.36;
 
     useEffect(() => {
-        getUsers(setUsers);
+        getClients(setUsers);
     }, []);
 
     const filteredClients = search.length > 0
         ? users.filter(user => user.NAME.includes(search.toUpperCase()))
         : users;
 
+        console.log(users)
+    
+    const handlereateClient = () => {
+        window.location.href = '/criarcliente';
+    }
 
     return (
         <ClientsContainer>
             <ClientFirstContent>
                 <AreaTitle>CLIENTES</AreaTitle>
-                <AddClient>+ ADICIONAR CLIENTE</AddClient>
+                <AddClient onClick={handlereateClient}>+ ADICIONAR CLIENTE</AddClient>
             </ClientFirstContent>
 
             <Clients>
@@ -39,12 +45,13 @@ export default function Clientes() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHeaderCell>ID</TableHeaderCell>
-                                    <TableHeaderCell>DATA CAD.</TableHeaderCell>
-                                    <TableHeaderCell>IMG.</TableHeaderCell>
                                     <TableHeaderCell>NOME</TableHeaderCell>
+                                    <TableHeaderCell>CPF</TableHeaderCell>
+                                    <TableHeaderCell>DATA CAD.</TableHeaderCell>
                                     <TableHeaderCell>E-MAIL</TableHeaderCell>
                                     <TableHeaderCell>CELULAR</TableHeaderCell>
+                                    <TableHeaderCell>COINS</TableHeaderCell>
+                                    <TableHeaderCell>TOTAL GASTO</TableHeaderCell>
                                     <TableHeaderCell>TOTAL GANHO</TableHeaderCell>
                                     <TableHeaderCell>OPÇÕES</TableHeaderCell>
                                 </TableRow>
@@ -52,15 +59,14 @@ export default function Clientes() {
                             <TableBody>
                                 {filteredClients.map((user, index) => (
                                     <TableRow key={index}>
-                                        <TableCell>{user.ID}</TableCell>
-                                        <TableCell>00/00/0000</TableCell>
-                                        <TableCell>
-                                            <ImgClient>s</ImgClient>
-                                        </TableCell>
                                         <TableCell>{user.NAME}</TableCell>
+                                        <TableCell>{formatCPF(user.CPF)}</TableCell>
+                                        <TableCell>00/00/0000</TableCell>
                                         <TableCell>{user.EMAIL}</TableCell>
                                         <TableCell>{user.CONTACT}</TableCell>
-                                        <TableCell>R$ 00,00</TableCell>
+                                        <TableCell>{user.TOTALCOINS}</TableCell>
+                                        <TableCell>$ {formatNumber(user.TOTALPAGO)}</TableCell>
+                                        <TableCell>$ {formatNumber((user.TOTALCOINS * coinAtualPrice) - (user.TOTALPAGO))}</TableCell>
                                         <TableCell>{index + 1}</TableCell>
                                     </TableRow>
                                 ))}
