@@ -32,9 +32,9 @@ export default function Home() {
                     {/* <StyledLink to="/documentos">
                         <Option color="#d2d2d2">DOCUMENTOS</Option>
                     </StyledLink> */}
-                    {/* <StyledLink to="/noticias">
+                    <StyledLink to="/noticias">
                         <Option color="#58afb8">NOTÍCIAS</Option>
-                    </StyledLink> */}
+                    </StyledLink>
                 </HomeOptions>
 
                 <GrapthContainer>

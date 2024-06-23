@@ -15,6 +15,7 @@ import { loginUser } from './redux/actions';
 import SignUpPage from './Components/CreateClient';
 import Saques from './Components/Saques';
 import Documentos from './Components/Documentos';
+import CreateNews from './Components/CreateNews';
 
 const NAV_LINKS = [
   { name: "Home", path: "/" },
@@ -25,7 +26,7 @@ const NAV_LINKS = [
   { name: "Saques", path: "/saques" },
   // { name: "Configurações", path: "/configuracoes" },
   // { name: "Documentos", path: "/documentos" },
-  // { name: "Notícias", path: "/noticias" }
+  { name: "Notícias", path: "/noticias" }
 ];
 
 function App() {
@@ -53,7 +54,7 @@ function App() {
               <Route path="/usuarios" element={<Users />} />
               <Route path="/contratos" element={<Contratos />} />
               <Route path="/depositos" element={<Depositos />} />
-              {/* <Route path="/noticias" element={<Depositos />} /> */}
+              <Route path="/noticias" element={<CreateNews />} />
               <Route path="/criarcliente" element={<SignUpPage />} />
               <Route path="/saques" element={<Saques />} />
               {/* <Route path="/documentos" element={<Documentos />} /> */}
