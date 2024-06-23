@@ -38,7 +38,7 @@ export default function Home() {
                 </HomeOptions>
 
                 <GrapthContainer>
-                    {/* <Grapth /> */}
+                    <Grapth />
                 </GrapthContainer>
             </HomeContent>
         </HomeContainer>
