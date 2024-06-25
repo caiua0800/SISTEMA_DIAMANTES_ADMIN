@@ -53,7 +53,7 @@ export default function Clientes() {
                                     <TableHeaderCell>COINS</TableHeaderCell>
                                     <TableHeaderCell>TOTAL GASTO</TableHeaderCell>
                                     <TableHeaderCell>TOTAL GANHO</TableHeaderCell>
-                                    <TableHeaderCell>OPÇÕES</TableHeaderCell>
+                                    {/* <TableHeaderCell>OPÇÕES</TableHeaderCell> */}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -67,7 +67,7 @@ export default function Clientes() {
                                         <TableCell>{user.TOTALCOINS}</TableCell>
                                         <TableCell>$ {formatNumber(user.TOTALPAGO)}</TableCell>
                                         <TableCell>$ {formatNumber((user.TOTALCOINS * coinAtualPrice) - (user.TOTALPAGO))}</TableCell>
-                                        <TableCell>{index + 1}</TableCell>
+                                        {/* <TableCell>{index + 1}</TableCell> */}
                                     </TableRow>
                                 ))}
                             </TableBody>

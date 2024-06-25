@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Grapth from './Grapth';
+import TradingViewWidget from './TeatherGrapth';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
                 </HomeOptions>
 
                 <GrapthContainer>
-                    <Grapth />
+                    <TradingViewWidget />
                 </GrapthContainer>
             </HomeContent>
         </HomeContainer>
@@ -73,8 +73,17 @@ const GrapthContainer = styled.div`
     padding: 40px 30px;
     box-sizing: border-box;
     width: 100%;
+    height: 600px;
+    overflw: hidden;
     display: flex;
     justify-content: center;
+
+    @media (max-width: 920px){
+        margin-top: 20px;
+        padding: 0px;
+        height: 450px;
+
+    }
 `;
 
 const HomeOptions = styled.div`
@@ -83,6 +92,11 @@ const HomeOptions = styled.div`
     justify-content: center;
     width: 100%;
     gap: 10px;
+
+    @media (max-width: 920px){
+        flex-wrap: no-wrap; 
+        flex-direction: column; 
+    }
 `;
 
 const Option = styled.div`
