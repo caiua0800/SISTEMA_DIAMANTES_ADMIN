@@ -27,6 +27,7 @@ function ModalComponent({ onClose }) {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
 
+
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -75,18 +76,22 @@ function ModalComponent({ onClose }) {
     };
 
     const saveNewsData = (imageUrl) => {
+        const date = new Date();
+        const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+
         firestore.collection('NEWS').add({
             title: title,
             body: body,
-            imageUrl: imageUrl
+            imageUrl: imageUrl,
+            data: formattedDate
         })
-        .then((docRef) => {
-            console.log("Documento adicionado com ID: ", docRef.id);
-            onClose(); // Fecha o modal após salvar os dados
-        })
-        .catch((error) => {
-            console.error("Erro ao adicionar documento: ", error);
-        });
+            .then((docRef) => {
+                console.log("Documento adicionado com ID: ", docRef.id);
+                onClose(); // Fecha o modal após salvar os dados
+            })
+            .catch((error) => {
+                console.error("Erro ao adicionar documento: ", error);
+            });
     };
 
     return (
@@ -150,8 +155,6 @@ export default function CreateNews() {
         </CreateNewsContainer>
     );
 }
-
-
 
 
 
