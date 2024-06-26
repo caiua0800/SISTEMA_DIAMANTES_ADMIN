@@ -58,13 +58,16 @@ export const getClients = async (setUsers) => {
                 EMAIL: userData.EMAIL,
                 TOTALPAGO: totalPago,
                 TOTALCOINS: totalCoins,
+                DOCSENVIADOS: userData.DOCSENVIADOS,
+                VERIFICADO: userData.VERIFICADO,
+                DOCURL: userData.DOCCLIENT,
+                FACEURL: userData.FACECLIENT,
             };
 
             userList.push(user);
         });
 
         setUsers(userList);
-        console.log(userList);
     } catch (error) {
         console.error("Error getting users:", error);
     }

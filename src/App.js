@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import { loginUser } from './redux/actions';
 import SignUpPage from './Components/CreateClient';
 import Saques from './Components/Saques';
-import Documentos from './Components/Documentos';
+import Validacao from './Components/Validacao';
 import CreateNews from './Components/CreateNews';
 
 const NAV_LINKS = [
@@ -25,7 +25,7 @@ const NAV_LINKS = [
   { name: "Depósitos", path: "/depositos" },
   { name: "Saques", path: "/saques" },
   // { name: "Configurações", path: "/configuracoes" },
-  // { name: "Documentos", path: "/documentos" },
+  { name: "Validação Doc.", path: "/validacao" },
   { name: "Notícias", path: "/noticias" }
 ];
 
@@ -57,6 +57,7 @@ function App() {
               <Route path="/noticias" element={<CreateNews />} />
               <Route path="/criarcliente" element={<SignUpPage />} />
               <Route path="/saques" element={<Saques />} />
+              <Route path="/validacao" element={<Validacao />} />
               {/* <Route path="/documentos" element={<Documentos />} /> */}
             </Routes>
           </>

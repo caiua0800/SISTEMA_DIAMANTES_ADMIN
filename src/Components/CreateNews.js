@@ -4,7 +4,7 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import firebase from "firebase/compat/app";
 import "firebase/compat/storage";
-import "firebase/compat/firestore"; // Import storage specifically
+import "firebase/compat/firestore"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyCnwSOjrqasUNSCp6UrK2moHd1OtLUMj28",
