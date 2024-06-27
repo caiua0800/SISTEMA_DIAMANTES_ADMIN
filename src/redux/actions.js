@@ -6,10 +6,11 @@ import DepositosActionTypes from './Depositos/action-types';
 import SaquesActionTypes from './saques/action-types'; // Verifique o caminho correto para o seu arquivo de actionTypes
 
 
-export const loginUser = (email, password) => {
+export const loginUser = (email, password, setLoad) => {
     return async (dispatch) => {
         const auth = getAuth();
         try {
+            setLoad(true)
             // Verifica na coleção ADMIN se o email existe
             const adminQuery = query(collection(db, 'ADMIN'), where('EMAIL', '==', email),
             where('ALLOW', '==', true));
@@ -30,8 +31,11 @@ export const loginUser = (email, password) => {
                     type: userActionTypes.LOGIN,
                     payload: { EMAIL: email, CPF: cpf, PASS: password }
                 });
+                setLoad(false)
+
             } else {
                 alert('Usuário não encontrado na coleção ADMIN');
+                setLoad(false)
                 // Aqui você pode adicionar um dispatch para um tipo de erro
             }
         } catch (error) {

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import rootReducer from "../redux/root-reducer";
 import userActionTypes from "../redux/user/action-types";
 import { loginUser } from '../redux/actions';
+import Loading from "./Loader";
 
 export default function Login() {
 
@@ -11,15 +12,16 @@ export default function Login() {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-
+    const [load, setLoad] = useState(false)
 
     const handleLoginClick = () => {
-        dispatch(loginUser(email, pass));
+        dispatch(loginUser(email, pass, setLoad));
     }
 
 
     return (
         <LoginContainer>
+            <Loading load={load} />
             <LoginCenter>
 
                 <Initial>ADMIN PLATFORM</Initial>
