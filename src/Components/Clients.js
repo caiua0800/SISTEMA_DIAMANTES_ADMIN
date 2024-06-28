@@ -14,7 +14,7 @@ export default function Clientes() {
     }, []);
 
     const filteredClients = search.length > 0
-        ? users.filter(user => user.NAME.includes(search.toUpperCase()))
+        ? users.filter(user => (user.NAME.includes(search.toUpperCase())) || (user.CPF.includes(search.toUpperCase())))
         : users;
 
         console.log(users)
@@ -36,7 +36,7 @@ export default function Clientes() {
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                         type="text"
-                        placeholder="Nome do Cliente"
+                        placeholder="Nome ou CPF do Cliente"
                     />
                 </SearchBar>
 

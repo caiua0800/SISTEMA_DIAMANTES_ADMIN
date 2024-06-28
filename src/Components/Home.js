@@ -29,9 +29,9 @@ export default function Home() {
                     {/* <StyledLink to="/configuracoes">
                         <Option color="#58afb8">CONFIGURAÇÕES</Option>
                     </StyledLink> */}
-                    {/* <StyledLink to="/documentos">
-                        <Option color="#d2d2d2">DOCUMENTOS</Option>
-                    </StyledLink> */}
+                    <StyledLink to="/validacao">
+                        <Option color="#d2d2d2">VALIDAÇÃO DE DOCUMENTOS</Option>
+                    </StyledLink>
                     <StyledLink to="/noticias">
                         <Option color="#58afb8">NOTÍCIAS</Option>
                     </StyledLink>

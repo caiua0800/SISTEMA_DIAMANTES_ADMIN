@@ -18,7 +18,7 @@ export default function SideBar({ NAV_LINKS }) {
 
   return (
     <SideBarAbsolute>
-      <ToggleButton onClick={toggleSidebar}>
+      <ToggleButton expanded={expanded} onClick={toggleSidebar}>
         <ArrowIcon
           src="https://firebasestorage.googleapis.com/v0/b/white-lable-528b0.appspot.com/o/assets%2Fmenu-icon-blue.png?alt=media&token=7450779f-3169-436f-9076-fa5a36540c67"
           expanded={expanded}
@@ -141,7 +141,7 @@ const NavItem = styled.div`
 const NavFooter = styled.div`
   width: 100%;
   height: 80px;
-  background-color: rgba(255, 3, 3, 0.8);
+  background-color: rgba(19, 19, 19, 0.8);
   display: flex;
   align-items: center;
   color: rgba(255, 255, 255, 0.6);
@@ -160,8 +160,8 @@ const NavFooter = styled.div`
 const ToggleButton = styled.button`
   width: 100%;
   height: 50px;
-  background-color: #393e46;
-  box-shadow: 2px 0px 2px rgba(0,0,0,0.6);
+  background-color: ${({ expanded }) => (expanded ? "#393e46" : "transparent")};
+  // box-shadow: 2px 0px 2px rgba(0,0,0,0.6);
   color: #233142;
   font-weight: 600;
   border: none;
@@ -170,7 +170,7 @@ const ToggleButton = styled.button`
   display: flex;
   flex-direction: ${({ expanded }) => (expanded ? "row" : "column")};
   align-items: center;
-  justify-content: ${({ expanded }) => (expanded ? "flex-start" : "center")};
+  justify-content: ${({ expanded }) => (expanded ? "center" : "center")};
   padding-left: ${({ expanded }) => (expanded ? "20px" : "0")};
 `;
 
