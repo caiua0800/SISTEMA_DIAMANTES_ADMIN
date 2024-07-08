@@ -16,6 +16,7 @@ import SignUpPage from './Components/CreateClient';
 import Saques from './Components/Saques';
 import Validacao from './Components/Validacao';
 import CreateNews from './Components/CreateNews';
+import Rendimentos from './Components/Rendimentos';
 
 const NAV_LINKS = [
   { name: "Home", path: "/" },
@@ -26,7 +27,8 @@ const NAV_LINKS = [
   { name: "Saques", path: "/saques" },
   // { name: "Configurações", path: "/configuracoes" },
   { name: "Validação Doc.", path: "/validacao" },
-  { name: "Notícias", path: "/noticias" }
+  { name: "Notícias", path: "/noticias" },
+  { name: "Rendimentos", path: "/rendimentos" }
 ];
 
 function App() {
@@ -58,6 +60,7 @@ function App() {
               <Route path="/criarcliente" element={<SignUpPage />} />
               <Route path="/saques" element={<Saques />} />
               <Route path="/validacao" element={<Validacao />} />
+              <Route path="/rendimentos" element={<Rendimentos />} />
               {/* <Route path="/documentos" element={<Documentos />} /> */}
             </Routes>
           </>

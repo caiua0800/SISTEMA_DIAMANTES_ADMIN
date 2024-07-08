@@ -30,10 +30,13 @@ export default function Home() {
                         <Option color="#58afb8">CONFIGURAÇÕES</Option>
                     </StyledLink> */}
                     <StyledLink to="/validacao">
-                        <Option color="#d2d2d2">VALIDAÇÃO DE DOCUMENTOS</Option>
+                        <Option color="#58afb8">VALIDAÇÃO DE DOCUMENTOS</Option>
                     </StyledLink>
                     <StyledLink to="/noticias">
-                        <Option color="#58afb8">NOTÍCIAS</Option>
+                        <Option color="#d2d2d2">NOTÍCIAS</Option>
+                    </StyledLink>
+                    <StyledLink to="/rendimentos">
+                        <Option color="#58afb8">RODAR RENDIMENTO DIÁRIO</Option>
                     </StyledLink>
                 </HomeOptions>
 
