@@ -62,6 +62,7 @@ export const getClients = async (setUsers) => {
                 VERIFICADO: userData.VERIFICADO,
                 DOCURL: userData.DOCCLIENT,
                 FACEURL: userData.FACECLIENT,
+                COIN_VALUE_ATUAL: userData.COIN_VALUE_ATUAL,
             };
 
             userList.push(user);

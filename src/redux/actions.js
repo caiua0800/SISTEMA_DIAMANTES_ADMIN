@@ -185,6 +185,13 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => 
                 return;
             }
 
+            if (!userData.COIN_VALUE_ATUAL) {
+                console.error(`User document with ID ${userId} does not have COIN_VALUE_ATUAL.`);
+                return;
+            }
+
+            const valor_moeda_atual_do_cliente = parseFloat(userData.COIN_VALUE_ATUAL);
+
             let gotCoinsTransation = 0;
 
             const updatedSaques = userData.SAQUES.map(saque => {
@@ -195,7 +202,7 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => 
                     const mes = String(today.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
                     const ano = today.getFullYear();
                     const dataFormatada = `${dia}/${mes}/${ano}`;
-                    gotCoinsTransation = (parseFloat(saque.VALOR.replace('.', '').replace(',', '.')) / 158.20)
+                    gotCoinsTransation = (parseFloat(saque.VALOR.replace('.', '').replace(',', '.')) / valor_moeda_atual_do_cliente )
                     return { ...saque, APROVADO: aceito, PENDENTE: true, DATARECEBIMENTO: dataFormatada, DADOSRECEBIMENTO: methodPayment, OBS: obs }; // Define PENDENTE como true
                 }
                 return saque;

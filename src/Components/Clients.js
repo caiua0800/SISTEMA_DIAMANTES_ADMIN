@@ -7,11 +7,13 @@ import { formatCPF, getClients, formatNumber } from "./ASSETS/assets";
 export default function Clientes() {
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState('');
-    const coinAtualPrice = 158.36;
+
 
     useEffect(() => {
         getClients(setUsers);
     }, []);
+
+
 
     const filteredClients = search.length > 0
         ? users.filter(user => (user.NAME.includes(search.toUpperCase())) || (user.CPF.includes(search.toUpperCase())))
@@ -66,7 +68,7 @@ export default function Clientes() {
                                         <TableCell>{user.CONTACT}</TableCell>
                                         <TableCell>{user.TOTALCOINS}</TableCell>
                                         <TableCell>$ {formatNumber(user.TOTALPAGO)}</TableCell>
-                                        <TableCell>$ {formatNumber((user.TOTALCOINS * coinAtualPrice) - (user.TOTALPAGO))}</TableCell>
+                                        <TableCell>$ {formatNumber((user.TOTALCOINS * user.COIN_VALUE_ATUAL) - (user.TOTALPAGO))}</TableCell>
                                         {/* <TableCell>{index + 1}</TableCell> */}
                                     </TableRow>
                                 ))}
