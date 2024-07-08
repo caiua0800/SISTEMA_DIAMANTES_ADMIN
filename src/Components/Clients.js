@@ -52,8 +52,8 @@ export default function Clientes() {
                                     <TableHeaderCell>DATA CAD.</TableHeaderCell>
                                     <TableHeaderCell>E-MAIL</TableHeaderCell>
                                     <TableHeaderCell>CELULAR</TableHeaderCell>
-                                    <TableHeaderCell>COINS</TableHeaderCell>
-                                    <TableHeaderCell>TOTAL GASTO</TableHeaderCell>
+                                    <TableHeaderCell>TOKENS OBTIDOS</TableHeaderCell>
+                                    <TableHeaderCell>TOTAL INVESTIDO</TableHeaderCell>
                                     <TableHeaderCell>TOTAL GANHO</TableHeaderCell>
                                     {/* <TableHeaderCell>OPÇÕES</TableHeaderCell> */}
                                 </TableRow>
@@ -68,7 +68,7 @@ export default function Clientes() {
                                         <TableCell>{user.CONTACT}</TableCell>
                                         <TableCell>{user.TOTALCOINS}</TableCell>
                                         <TableCell>$ {formatNumber(user.TOTALPAGO)}</TableCell>
-                                        <TableCell>$ {formatNumber((user.TOTALCOINS * user.COIN_VALUE_ATUAL) - (user.TOTALPAGO))}</TableCell>
+                                        <TableCell>$ {formatNumber(user.LUCRO_OBTIDO)}</TableCell>
                                         {/* <TableCell>{index + 1}</TableCell> */}
                                     </TableRow>
                                 ))}

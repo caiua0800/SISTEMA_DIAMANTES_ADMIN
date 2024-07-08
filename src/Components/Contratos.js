@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { getDepositos } from '../redux/actions';
+import { getDepositos, getTotalValorSacado, consultarALLOWSELL } from '../redux/actions';
 import { formatNumber } from "./ASSETS/assets";
 
 export default function Contratos() {
@@ -10,16 +10,24 @@ export default function Contratos() {
     const [dataInicialCompraFilter, setDataInicialCompraFilter] = useState(''); // Estado para filtro por data inicial de compra
     const [dataFinalCompraFilter, setDataFinalCompraFilter] = useState(''); // Estado para filtro por data final de compra
     const [total, setTotal] = useState(0);
-    const [totalTaxa, setTotalTaxa] = useState(0);
+    const [totalDeGanhos, setTotalDeGanhos] = useState(0);
     const [totalCOINS, setTotalCOINS] = useState(0);
     const [totalGanhos, setTotalGanhos] = useState(0);
     const taxa = 0.3;
     const coinAtualPrice = 158.36;
     const dispatch = useDispatch();
     const depositos = useSelector((state) => state.DepositosReducer.depositos);
+    const [totalSacado, setTotalSacado] = useState(0);
 
     useEffect(() => {
         dispatch(getDepositos());
+        
+        async function fetchTotalValorSacado() {
+            const total = await getTotalValorSacado();
+            setTotalSacado(total);
+        }
+
+        fetchTotalValorSacado();
     }, [dispatch]);
 
 
@@ -49,19 +57,22 @@ export default function Contratos() {
         setDataFinalCompraFilter(e.target.value);
     };
 
+
     useEffect(() => {
-        let sum = 0;
-        let sum2 = 0;
-        let sum3 = 0;
+        let sum = 0;   // total investidos
+        let sum2 = 0;  // total de ganhos
+        let sum3 = 0;  // total de tokens
         filteredClients.forEach(user => {
             if (user.STATUS) {
                 sum += user.TOTALSPENT;
-                sum2 += ((user.TOTALSPENT*taxa) + user.TOTALSPENT)
-                sum3 += user.COINS;
+                sum2 += ((user.TOTALSPENT*(user.LUCRO_OBTIDO / 100)))
+
+                if(consultarALLOWSELL(user.ALLOWSELL))
+                    sum3 += user.COINS;
             }
         });
-        setTotal(sum);
-        setTotalTaxa(sum2);
+        setTotal(sum - totalSacado);
+        setTotalDeGanhos(sum2);
         setTotalCOINS(sum3);
     }, [filteredClients]);
 
@@ -77,12 +88,12 @@ export default function Contratos() {
                             <span>$ {formatNumber(total)}</span>
                         </BoxContent>
                     </Box>
-                    <Box bgColor="#f2f2f2">
+                    {/* <Box bgColor="#f2f2f2">
                         <BoxContent>
                             <BoxTitle>VALOR TOTAL COM TAXA</BoxTitle>
                             <span>$ {formatNumber(totalTaxa)}</span>
                         </BoxContent>
-                    </Box>
+                    </Box> */}
                     <Box bgColor="#f2f2f2">
                         <BoxContent>
                             <BoxTitle>QUANTIDADE TOTAL DE TOKENS</BoxTitle>
@@ -92,7 +103,7 @@ export default function Contratos() {
                     <Box bgColor="#f2f2f2">
                         <BoxContent>
                             <BoxTitle>TOTAL DE GANHOS</BoxTitle>
-                            <span>R$ 1.536.841,27</span>
+                            <span>R$ {formatNumber(totalDeGanhos)}</span>
                         </BoxContent>
                     </Box>
                 </Boxes>
@@ -137,7 +148,7 @@ export default function Contratos() {
                             <TableHeaderCell>QUANTIDADE COINS</TableHeaderCell>
                             <TableHeaderCell>VALOR UNI.</TableHeaderCell>
                             <TableHeaderCell>VALOR TOTAL</TableHeaderCell>
-                            <TableHeaderCell>TOTAL + TAXA</TableHeaderCell>
+
                             <TableHeaderCell>TOTAL GANHO</TableHeaderCell>
                             {/* <TableHeaderCell>RENDENDO ATÉ</TableHeaderCell> */}
                             <TableHeaderCell>STATUS</TableHeaderCell>
@@ -152,8 +163,7 @@ export default function Contratos() {
                                 <TableCell>{user.COINS}</TableCell>
                                 <TableCell>$ {user.COINVALUE}</TableCell>
                                 <TableCell>$ {formatNumber(user.TOTALSPENT)}</TableCell>
-                                <TableCell>$ {formatNumber(user.TOTALSPENT) + 50}</TableCell>
-                                <TableCell>$ {formatNumber((user.COINS * coinAtualPrice) - user.TOTALSPENT)}</TableCell>
+                                <TableCell>$ {formatNumber((user.TOTALSPENT * (user.LUCRO_OBTIDO / 100)))}</TableCell>
                                 {/* <TableCell>00/00/0000</TableCell> */}
                                 <TableCell>{user.STATUS ? 'ACEITO' : 'NEGADO'}</TableCell>
                             </TableRow>

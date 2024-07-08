@@ -38,6 +38,7 @@ export const getClients = async (setUsers) => {
             const userData = doc.data();
             let totalPago = 0;
             let totalCoins = 0;
+            let totalLucro = 0;
 
             // Verifica se existe o campo CONTRATOS e se é um array
             if (userData.CONTRATOS && Array.isArray(userData.CONTRATOS)) {
@@ -46,6 +47,7 @@ export const getClients = async (setUsers) => {
                     if (contrato.STATUS) {
                         totalPago += contrato.TOTALSPENT || 0;
                         totalCoins += contrato.COINS || 0;
+                        totalLucro += ((contrato.LUCRO_OBTIDO / 100) * contrato.TOTALSPENT);
                     }
                 });
             }
@@ -63,6 +65,7 @@ export const getClients = async (setUsers) => {
                 DOCURL: userData.DOCCLIENT,
                 FACEURL: userData.FACECLIENT,
                 COIN_VALUE_ATUAL: userData.COIN_VALUE_ATUAL,
+                LUCRO_OBTIDO: totalLucro,
             };
 
             userList.push(user);

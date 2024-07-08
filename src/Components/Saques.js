@@ -34,19 +34,18 @@ export default function Saques() {
 
     const filteredClients = search.length > 0
     ? saques.filter(user => {
-        // Condições para filtrar por nome, ID ou pendente false
         return (
             (user.NAME && user.NAME.includes(search.toUpperCase())) ||
-            (user.ID && user.ID.includes(search.toUpperCase())) ||
-            (!user.PENDENTE) // Filtra se PENDENTE for false
+            (user.ID && user.ID.includes(search.toUpperCase()))
         );
-    })
-    : saques;
+    }).filter(user => !user.PENDENTE) // Filtra se PENDENTE for false
+    : saques.filter(user => !user.PENDENTE); // Filtra se PENDENTE for false quando não há pesquisa
 
 
-    const handleOpenModal = (userId, saqueId) => {
+
+    const handleOpenModal = (userId, saqueId, valor) => {
         setModalOpen(true);
-        setUserINFOMODAL({userId, saqueId})
+        setUserINFOMODAL({userId, saqueId, valor})
     };
 
     const handleAproveChange = async () => {
@@ -56,15 +55,14 @@ export default function Saques() {
             console.log("User logged in:", userCredential.user);
     
             // Dispatch actions based on approval decision
-            dispatch(setAceitoSaques(userINFOMODAL.userId, userINFOMODAL.saqueId, modalData.aprovarTransacao === 'APROVAR SAQUE', modalData.metodoPagamento, modalData.observacoes));
+            dispatch(setAceitoSaques(userINFOMODAL.userId, userINFOMODAL.saqueId, modalData.aprovarTransacao === 'APROVAR SAQUE', modalData.metodoPagamento, modalData.observacoes, userINFOMODAL.valor));
             closeModal();
             alert("TRANSAÇÃO AUTORIZADA");
-
+            dispatch(getSaques());
         } catch (error) {
             alert("ACESSO NEGADO OU INEXISTENTE");
+            dispatch(getSaques());
         }
-        dispatch(getSaques());
-
     };
 
     const handleSaveAceitoModal = () => {
@@ -158,7 +156,7 @@ export default function Saques() {
                                             <OptionsButtons>
                                                 {/* <button onClick={() => handleSetNegado(user.ID, user.IDSAQUE)}>Negar</button>
                                                 <button onClick={() => handleSetAceito(user.ID, user.IDSAQUE)}>Aceitar</button> */}
-                                                <img onClick={() => {handleOpenModal(user.ID, user.IDSAQUE)}} src={payIco} alt="payIco"/>
+                                                <img onClick={() => {handleOpenModal(user.ID, user.IDSAQUE, user.VALOR)}} src={payIco} alt="payIco"/>
                                             </OptionsButtons>
                                         </TableCell>
                                     </TableRow>

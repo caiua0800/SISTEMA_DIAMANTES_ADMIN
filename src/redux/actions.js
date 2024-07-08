@@ -6,6 +6,7 @@ import DepositosActionTypes from './Depositos/action-types';
 import SaquesActionTypes from './saques/action-types'; // Verifique o caminho correto para o seu arquivo de actionTypes
 
 
+
 export const loginUser = (email, password, setLoad) => {
     return async (dispatch) => {
         const auth = getAuth();
@@ -13,7 +14,7 @@ export const loginUser = (email, password, setLoad) => {
             setLoad(true)
             // Verifica na coleção ADMIN se o email existe
             const adminQuery = query(collection(db, 'ADMIN'), where('EMAIL', '==', email),
-            where('ALLOW', '==', true));
+                where('ALLOW', '==', true));
             const adminQuerySnapshot = await getDocs(adminQuery);
             let cpf = '';
 
@@ -52,9 +53,9 @@ export const logoutUser = () => {
             await signOut(auth);
             dispatch({
                 type: userActionTypes.LOGOUT,
-                payload: null 
+                payload: null
             });
-            localStorage.removeItem('user'); 
+            localStorage.removeItem('user');
             localStorage.removeItem('cpf');
 
             window.location.href = '/';
@@ -62,6 +63,33 @@ export const logoutUser = () => {
             console.error("Error signing out", error);
         }
     };
+};
+
+export const getTotalValorSacado = async () => {
+    try {
+        // Referência à coleção 'USERS'
+        const usersCollectionRef = collection(db, 'USERS');
+
+        // Obter todos os documentos da coleção 'USERS'
+        const querySnapshot = await getDocs(usersCollectionRef);
+
+        // Inicializar a variável para armazenar a soma dos valores
+        let totalValorSacado = 0;
+
+        // Iterar sobre cada documento e somar o valor do campo 'VALORSACADO'
+        querySnapshot.forEach((doc) => {
+            const userData = doc.data();
+            if (userData.VALORSACADO) {
+                totalValorSacado += userData.VALORSACADO;
+            }
+        });
+
+        // Retornar a soma total
+        return totalValorSacado;
+    } catch (error) {
+        console.error('Erro ao obter o valor total sacado:', error);
+        throw error;
+    }
 };
 
 export const getDepositos = () => {
@@ -79,6 +107,7 @@ export const getDepositos = () => {
                         ...contrato,
                         NAME: data.NAME,
                         CONTACT: data.CONTACT,
+                        VALORSACADO: data.VALORSACADO,
                         ID: doc.id,
                     }));
                     depositos = [...depositos, ...contratosComInfoAdicional];
@@ -166,8 +195,17 @@ export const setAceito = (userId, contratoId, aceito) => {
     };
 };
 
+function convertStringToNumber(str) {
+    // Remove os pontos
+    const withoutDots = str.replace(/\./g, '');
+    // Substitui a vírgula por um ponto
+    const withDot = withoutDots.replace(',', '.');
+    // Converte a string para um número
+    return parseFloat(withDot);
+}
+
 // actions.js
-export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => {
+export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs, valor) => {
     return async (dispatch) => {
         try {
             const userDocRef = doc(db, 'USERS', userId);
@@ -191,6 +229,8 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => 
             }
 
             const valor_moeda_atual_do_cliente = parseFloat(userData.COIN_VALUE_ATUAL);
+            const valor_sacado = userData.VALORSACADO ? (userData.VALORSACADO) : 0;
+
 
             let gotCoinsTransation = 0;
 
@@ -202,7 +242,7 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => 
                     const mes = String(today.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
                     const ano = today.getFullYear();
                     const dataFormatada = `${dia}/${mes}/${ano}`;
-                    gotCoinsTransation = (parseFloat(saque.VALOR.replace('.', '').replace(',', '.')) / valor_moeda_atual_do_cliente )
+                    gotCoinsTransation = (parseFloat(saque.VALOR.replace('.', '').replace(',', '.')) / valor_moeda_atual_do_cliente)
                     return { ...saque, APROVADO: aceito, PENDENTE: true, DATARECEBIMENTO: dataFormatada, DADOSRECEBIMENTO: methodPayment, OBS: obs }; // Define PENDENTE como true
                 }
                 return saque;
@@ -211,9 +251,12 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs) => 
             const currentGotCoins = parseFloat(userData.GOTCOINS || '0');
             const updatedGotCoins = (currentGotCoins + gotCoinsTransation).toFixed(2);
 
-            await updateDoc(userDocRef, { SAQUES: updatedSaques, GOTCOINS: updatedGotCoins.toString() });
+            if (aceito) {
+                await updateDoc(userDocRef, { SAQUES: updatedSaques, GOTCOINS: updatedGotCoins.toString(), VALORSACADO: (valor_sacado + convertStringToNumber(valor)) });
+            }else{
+                await updateDoc(userDocRef, { SAQUES: updatedSaques });
+            }
 
-            // Dispara uma ação Redux para indicar que o saque foi atualizado com sucesso
             dispatch({
                 type: SaquesActionTypes.UPDATE,
                 payload: { userId, updatedSaques }
@@ -287,3 +330,19 @@ export const createUser = (name, cpf, email, contact, cargo, password) => {
         }
     };
 };
+
+export const consultarALLOWSELL = (dateString) => {
+    // Split the input date string to get day, month, and year
+    const [day, month, year] = dateString.split('/').map(Number);
+    
+    // Create a Date object for the input date
+    const inputDate = new Date(year, month - 1, day); // Note: months are 0-indexed in JS Date
+    
+    // Get the current date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set hours to 0 to compare only the date part
+
+    // Compare dates
+    return today < inputDate;
+}
+

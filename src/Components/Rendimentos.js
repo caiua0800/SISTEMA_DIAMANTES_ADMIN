@@ -4,6 +4,7 @@ import { db } from "../DATABASE/firebaseConfig"; // Importe o db da sua configur
 import { doc, getDoc, updateDoc, collection, getDocs } from "firebase/firestore"; // Importe as funções necessárias do Firestore
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth"; // Importe as funções necessárias do Firebase Auth
 import Loading from "./Loader";
+import { consultarALLOWSELL } from "../redux/actions";
 
 export default function Rendimentos() {
     const [rendimentoAtual, setRendimentoAtual] = useState(0);
@@ -74,7 +75,7 @@ export default function Rendimentos() {
     };
 
     const handleLoginAndRun = async () => {
-        setLoad(true)
+        setLoad(true);
         try {
             const auth = getAuth();
             const userCredential = await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
@@ -83,24 +84,38 @@ export default function Rendimentos() {
     
             const usersCollectionRef = collection(db, 'USERS');
             const usersSnapshot = await getDocs(usersCollectionRef);
-
+    
             const updatePromises = usersSnapshot.docs.map(async (userDoc) => {
-                const userData = userDoc.data();
-                const currentCoinValue = userData.COIN_VALUE_ATUAL;
-                const newCoinValue = currentCoinValue + (currentCoinValue * ((rendimentoAtual / daysInMonth) / 100));
                 const userDocRef = doc(db, 'USERS', userDoc.id);
-                await updateDoc(userDocRef, { COIN_VALUE_ATUAL: newCoinValue });
+                const userData = userDoc.data();
+                const contratos = userData.CONTRATOS;
+    
+                if (Array.isArray(contratos)) {
+                    const updatedContratos = contratos.map(contrato => {
+                        if (consultarALLOWSELL(contrato.ALLOWSELL)) {
+                            return {
+                                ...contrato,
+                                LUCRO_OBTIDO: contrato.LUCRO_OBTIDO + (rendimentoAtual / daysInMonth)
+                            };
+                        } else {
+                            return contrato;
+                        }
+                    });
+    
+                    await updateDoc(userDocRef, { CONTRATOS: updatedContratos });
+                }
             });
     
             await Promise.all(updatePromises);
-            setLoad(false)
-            alert('RENDIMENTO ATUALIZADO PARA TODOS OS CLIENTES')
+            setLoad(false);
+            alert('RENDIMENTO ATUALIZADO PARA TODOS OS CLIENTES');
         } catch (error) {
-            setLoad(false)
-            alert('ERRO AO ATUALIZAR RENDIMENTO')
+            setLoad(false);
+            alert('ERRO AO ATUALIZAR RENDIMENTO');
             console.error('Erro ao fazer login ou realizar POST:', error);
         }
     };
+    
     
 
 
