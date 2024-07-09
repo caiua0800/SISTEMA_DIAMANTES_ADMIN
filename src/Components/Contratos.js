@@ -179,9 +179,7 @@ export default function Contratos() {
 
 const ContratosContainer = styled.div`
     width: 100%;
-    // background: linear-gradient(to bottom, rgba(228, 244, 250, 1), white,
-    // rgba(255, 213, 235, 1), rgba(152, 213, 235, 1));
-    background-color: #393e46;
+    background: linear-gradient(to right, #001D3D, #003566, #001D3D);
     min-height: 100vh;
     padding: 40px;
     display: flex;
@@ -205,12 +203,10 @@ const HomeInitialContent = styled.div`
     align-items: start;
    
     position: relative;
-
-
 `;
 
 const PartTitle = styled.div`
-    color: #f96d00;
+    color: #FFC300;
     font-weight: 600;
     font-size: 18px;
 
@@ -283,7 +279,7 @@ const BoxTitle = styled.p`
     margin:0;
     padding:0;
     font-weight: 600;
-    color: rgba(0,0,0,0.6);
+    color: #;
 `;
 
 const Contracts = styled.div`
@@ -299,24 +295,23 @@ const Contracts = styled.div`
 const ContractsTitle = styled.h1`
     width: 100%;
     display: flex;
-    color: #f96d00;
+    color: #FFC300;
     justify-content: center;
     padding-bottom: 20px;
-    border-bottom: 2px solid #f96d00;
+    border-bottom: 2px solid #FFC300;
 `;
 
 const SearchAreaContent = styled.div`
     width: 100%;
-    border: 1px solid rgba(0,0,0,0.1);
-    // background-color: ${({ bgColor }) => bgColor || "#F7F7F7"};
+    // border: 1px solid rgba(0,0,0,0.1);
 
-    background-color: #222831;
-    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2);
+    // background-color: #222831;
+    // box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2);
 
     @media (max-width: 915px){
-        border: 1px solid rgba(0,0,0,0);
-        box-shadow: -2px 2px 2px rgba(0, 0, 0, 0);
-        background-color: transparent;
+        // border: 1px solid rgba(0,0,0,0);
+        // box-shadow: -2px 2px 2px rgba(0, 0, 0, 0);
+        // background-color: transparent;
     }
 `;
 
@@ -380,10 +375,10 @@ const SecondSearchBar = styled.div`
 
     input{
         width: 100%;
-        height: 30px;
+        height: 40px;
         border: 0;
         box-sizing: border-box;
-        border-radius: 8px;  
+        border-radius: 3px;  
         text-align: center;     
         background-color: #F7F7F7;
         border: 1px solid rgba(0,0,0,0.1);
@@ -425,7 +420,6 @@ const TableContainer = styled.div`
 
 const Table = styled.table`
     width: 100%;
-    
     overflow: auto; 
     border-collapse: collapse;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -434,25 +428,27 @@ const Table = styled.table`
 `;
 
 const TableHeader = styled.thead`
-
     color: #f2f2f2;
 `;
 
 const TableRow = styled.tr`
-    background-color: #393e46;
-    color: #f2f2f2;
+    background: #000814; 
+    color: #FFC300;
+
     &:nth-child(even) {
-        color: #222831;
-        background-color: rgba(57, 62, 70, 0.8);
+        color: #FFC300;
+        background-color: #001D3D;
     }
 `;
 
 const TableHeaderCell = styled.th`
-    padding: 15px; /* Ajuste o padding conforme necessário */
-    text-align: center; /* Ajuste o alinhamento conforme necessário */
-    color: #f2f2f2;
-    background-color: #222831;
+    padding: 15px;
+    text-align: center;
+    color: #219ebc;
+    background-color: #001D3D;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    min-width: 100px; /* Ajuste conforme necessário */
+    white-space: nowrap;
 `;
 
 const TableBody = styled.tbody`
@@ -460,10 +456,12 @@ const TableBody = styled.tbody`
 `;
 
 const TableCell = styled.td`
-    padding: 15px; /* Ajuste o padding conforme necessário */
-    text-align: center; /* Ajuste o alinhamento conforme necessário */
+    padding: 15px;
+    text-align: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
+    min-width: 100px; /* Ajuste conforme necessário */
+    white-space: nowrap;
+    transition: .3s;
     &:hover{
         background-color: black;
         cursor: pointer;
