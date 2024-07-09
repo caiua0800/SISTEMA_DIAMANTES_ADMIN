@@ -69,6 +69,10 @@ export default function Rendimentos() {
         fetchLastRendimento();
     }, []);
 
+    useEffect(() => {
+        fetchRendimentoMensal();
+    }, [lastRendimento])
+
     const handleSaveRendimento = async () => {
         setLoad(true);
 
@@ -87,6 +91,43 @@ export default function Rendimentos() {
 
         }
     };
+
+    const handleSaveLastRendimento = async () => {
+        setLoad(true);
+    
+        try {
+            const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'ULTIMA_VALORIZACAO');
+            
+            // Obter a data e hora atual
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+            // Formatar a data como dd/mm/aaaa
+            const formattedDate = `${day}/${month}/${year}`;
+            // Formatar a hora como hh:mm
+            const formattedTime = `${hours}:${minutes}`;
+    
+            await updateDoc(rendimentoDocRef, {
+                DATA: formattedDate,
+                HORA: formattedTime,
+                PERCENTUAL: (rendimentoAtual / daysInMonth).toFixed(2),
+            });
+    
+            setRendimentoAtual(parseFloat(modalValue));
+            handleHideModal();
+            setLoad(false);
+    
+        } catch (error) {
+            console.error('Erro ao atualizar rendimento mensal:', error);
+            setLoad(false);
+        }
+    };
+    
+    
 
     const handleShowModal = () => {
         setModalValue(rendimentoAtual);
@@ -124,14 +165,18 @@ export default function Rendimentos() {
                             return contrato;
                         }
                     });
-    
                     await updateDoc(userDocRef, { CONTRATOS: updatedContratos });
                 }
             });
     
             await Promise.all(updatePromises);
+            await handleSaveLastRendimento();
+            await fetchRendimentoMensal();
+            await fetchLastRendimento();
+    
             setLoad(false);
             alert('RENDIMENTO ATUALIZADO PARA TODOS OS CLIENTES');
+    
         } catch (error) {
             setLoad(false);
             alert('ERRO AO ATUALIZAR RENDIMENTO');
@@ -139,6 +184,14 @@ export default function Rendimentos() {
         }
     };
     
+    useEffect(() => {
+        fetchRendimentoMensal();
+        fetchLastRendimento();
+    }, []);
+    
+    useEffect(() => {
+        fetchLastRendimento();
+    }, [lastRendimento]);
     
 
 

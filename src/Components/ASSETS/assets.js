@@ -66,6 +66,7 @@ export const getClients = async (setUsers) => {
                 FACEURL: userData.FACECLIENT,
                 COIN_VALUE_ATUAL: userData.COIN_VALUE_ATUAL,
                 LUCRO_OBTIDO: totalLucro,
+                DATACRIACAO: userData.DATACRIACAO,
             };
 
             userList.push(user);

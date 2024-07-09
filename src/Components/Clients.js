@@ -63,7 +63,7 @@ export default function Clientes() {
                                     <TableRow key={index}>
                                         <TableCell>{user.NAME}</TableCell>
                                         <TableCell>{formatCPF(user.CPF)}</TableCell>
-                                        <TableCell>00/00/0000</TableCell>
+                                        <TableCell>{user.DATACRIACAO}</TableCell>
                                         <TableCell>{user.EMAIL}</TableCell>
                                         <TableCell>{user.CONTACT}</TableCell>
                                         <TableCell>{user.TOTALCOINS}</TableCell>
