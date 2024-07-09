@@ -137,6 +137,7 @@ export const getSaques = () => {
                         ...contrato,
                         NAME: data.NAME,
                         CONTACT: data.CONTACT,
+                        INDICATIONBUDGET: data.INDICATIONBUDGET,
                         ID: doc.id,
                     }));
                     saques = [...saques, ...saquesComInfoAdicional];
@@ -205,7 +206,7 @@ function convertStringToNumber(str) {
 }
 
 // actions.js
-export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs, valor) => {
+export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs, valor, fundo_escolhido) => {
     return async (dispatch) => {
         try {
             const userDocRef = doc(db, 'USERS', userId);
@@ -230,9 +231,8 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs, val
 
             const valor_moeda_atual_do_cliente = parseFloat(userData.COIN_VALUE_ATUAL);
             const valor_sacado = userData.VALORSACADO ? (userData.VALORSACADO) : 0;
+            const indicationBudget = userData.INDICATIONBUDGET;
 
-
-            let gotCoinsTransation = 0;
 
             const updatedSaques = userData.SAQUES.map(saque => {
 
@@ -242,20 +242,27 @@ export const setAceitoSaques = (userId, saqueId, aceito, methodPayment, obs, val
                     const mes = String(today.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
                     const ano = today.getFullYear();
                     const dataFormatada = `${dia}/${mes}/${ano}`;
-                    gotCoinsTransation = (parseFloat(saque.VALOR.replace('.', '').replace(',', '.')) / valor_moeda_atual_do_cliente)
                     return { ...saque, APROVADO: aceito, PENDENTE: true, DATARECEBIMENTO: dataFormatada, DADOSRECEBIMENTO: methodPayment, OBS: obs }; // Define PENDENTE como true
                 }
                 return saque;
             });
 
             const currentGotCoins = parseFloat(userData.GOTCOINS || '0');
-            const updatedGotCoins = (currentGotCoins + gotCoinsTransation).toFixed(2);
 
-            if (aceito) {
-                await updateDoc(userDocRef, { SAQUES: updatedSaques, GOTCOINS: updatedGotCoins.toString(), VALORSACADO: (valor_sacado + convertStringToNumber(valor)) });
+            if(fundo_escolhido != 'SALDOINDICACAO'){
+                if (aceito) {
+                    await updateDoc(userDocRef, { SAQUES: updatedSaques, VALORSACADO: (valor_sacado + convertStringToNumber(valor)) });
+                }else{
+                    await updateDoc(userDocRef, { SAQUES: updatedSaques });
+                }
             }else{
-                await updateDoc(userDocRef, { SAQUES: updatedSaques });
+                if (aceito) {
+                    await updateDoc(userDocRef, { SAQUES: updatedSaques, INDICATIONBUDGET: (indicationBudget - convertStringToNumber(valor)) });
+                }else{
+                    await updateDoc(userDocRef, { SAQUES: updatedSaques });
+                }
             }
+
 
             dispatch({
                 type: SaquesActionTypes.UPDATE,

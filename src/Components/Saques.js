@@ -43,9 +43,9 @@ export default function Saques() {
 
 
 
-    const handleOpenModal = (userId, saqueId, valor) => {
+    const handleOpenModal = (userId, saqueId, valor, fundo_escolhido) => {
         setModalOpen(true);
-        setUserINFOMODAL({userId, saqueId, valor})
+        setUserINFOMODAL({userId, saqueId, valor, fundo_escolhido})
     };
 
     const handleAproveChange = async () => {
@@ -55,7 +55,7 @@ export default function Saques() {
             console.log("User logged in:", userCredential.user);
     
             // Dispatch actions based on approval decision
-            dispatch(setAceitoSaques(userINFOMODAL.userId, userINFOMODAL.saqueId, modalData.aprovarTransacao === 'APROVAR SAQUE', modalData.metodoPagamento, modalData.observacoes, userINFOMODAL.valor));
+            dispatch(setAceitoSaques(userINFOMODAL.userId, userINFOMODAL.saqueId, modalData.aprovarTransacao === 'APROVAR SAQUE', modalData.metodoPagamento, modalData.observacoes, userINFOMODAL.valor, userINFOMODAL.fundo_escolhido));
             closeModal();
             alert("TRANSAÇÃO AUTORIZADA");
             dispatch(getSaques());
@@ -139,6 +139,7 @@ export default function Saques() {
                                     <TableHeaderCell>DATA SOLICITAÇÃO</TableHeaderCell>
                                     <TableHeaderCell>PRAZO DE VALIDAÇÃO</TableHeaderCell>
                                     <TableHeaderCell>VALOR</TableHeaderCell>
+                                    <TableHeaderCell>FUNDO</TableHeaderCell>
                                     <TableHeaderCell>APROVADO</TableHeaderCell>
                                     <TableHeaderCell>OPÇÕES</TableHeaderCell>
                                 </TableRow>
@@ -151,12 +152,13 @@ export default function Saques() {
                                         <TableCell>{user.DATA}</TableCell>
                                         <TableCell>{user.DATA}</TableCell>
                                         <TableCell>$ {user.VALOR}</TableCell>
+                                        <TableCell>{(user.FUNDO_ESCOLHIDO === 'SALDORECOMPRA' ? 'RECOMPRA' : 'INDICAÇÃO')}</TableCell>
                                         <TableCell>{user.PENDENTE ? (user.APROVADO ? 'APROVADA' : 'NEGADO') : 'PENDENTE'}</TableCell>
                                         <TableCell>
                                             <OptionsButtons>
                                                 {/* <button onClick={() => handleSetNegado(user.ID, user.IDSAQUE)}>Negar</button>
                                                 <button onClick={() => handleSetAceito(user.ID, user.IDSAQUE)}>Aceitar</button> */}
-                                                <img onClick={() => {handleOpenModal(user.ID, user.IDSAQUE, user.VALOR)}} src={payIco} alt="payIco"/>
+                                                <img onClick={() => {handleOpenModal(user.ID, user.IDSAQUE, user.VALOR, user.FUNDO_ESCOLHIDO)}} src={payIco} alt="payIco"/>
                                             </OptionsButtons>
                                         </TableCell>
                                     </TableRow>
