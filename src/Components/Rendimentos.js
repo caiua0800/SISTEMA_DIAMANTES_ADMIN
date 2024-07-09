@@ -14,36 +14,59 @@ export default function Rendimentos() {
     const [daysInMonth, setDaysInMonth] = useState(30);
     const [adminEmail, setAdminEmail] = useState('');
     const [adminPassword, setAdminPassword] = useState('');
+    const [lastRendimento, setLastRendimento] = useState('');
     const [load, setLoad] = useState(false);
 
-    useEffect(() => {
-        async function fetchRendimentoMensal() {
-            setLoad(true);
-            try {
-                const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'RENDIMENTO');
-                const rendimentoDoc = await getDoc(rendimentoDocRef);
+    async function fetchRendimentoMensal() {
+        setLoad(true);
+        try {
+            const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'RENDIMENTO');
+            const rendimentoDoc = await getDoc(rendimentoDocRef);
 
-                if (rendimentoDoc.exists()) {
-                    const rendimentoData = rendimentoDoc.data();
-                    setRendimentoAtual(rendimentoData.RENDIMENTO_MENSAL);
-                    setLoad(false);
-
-                    // Obter o número de dias no mês atual
-                    const today = new Date();
-                    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-                    const days = lastDayOfMonth.getDate();
-                    setDaysInMonth(days);
-                } else {
-                    setLoad(false);
-                    console.log('Documento de rendimento não encontrado');
-                }
-            } catch (error) {
+            if (rendimentoDoc.exists()) {
+                const rendimentoData = rendimentoDoc.data();
+                setRendimentoAtual(rendimentoData.RENDIMENTO_MENSAL);
                 setLoad(false);
-                console.error('Erro ao buscar rendimento mensal:', error);
-            }
-        }
 
+                // Obter o número de dias no mês atual
+                const today = new Date();
+                const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                const days = lastDayOfMonth.getDate();
+                setDaysInMonth(days);
+            } else {
+                setLoad(false);
+                console.log('Documento de rendimento não encontrado');
+            }
+        } catch (error) {
+            setLoad(false);
+            console.error('Erro ao buscar rendimento mensal:', error);
+        }
+    }
+
+    async function fetchLastRendimento() {
+        setLoad(true);
+        try {
+            const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'ULTIMA_VALORIZACAO');
+            const rendimentoDoc = await getDoc(rendimentoDocRef);
+
+            if (rendimentoDoc.exists()) {
+                const ULTIMA_VALORIZACAOData = rendimentoDoc.data();
+                setLastRendimento( (ULTIMA_VALORIZACAOData.PERCENTUAL*100)+'%' + ' => ' + ULTIMA_VALORIZACAOData.DATA + ' - ' + ULTIMA_VALORIZACAOData.HORA);
+                setLoad(false);
+
+            } else {
+                setLoad(false);
+                console.log('Documento de ULTIMA_VALORIZACAO não encontrado');
+            }
+        } catch (error) {
+            setLoad(false);
+            console.error('Erro ao buscar ULTIMA_VALORIZACAO:', error);
+        }
+    }
+
+    useEffect(() => {
         fetchRendimentoMensal();
+        fetchLastRendimento();
     }, []);
 
     const handleSaveRendimento = async () => {
@@ -140,6 +163,13 @@ export default function Rendimentos() {
                     </RendimentosAtualDiv>
                 </RendimentosConfig>
 
+                <LastRendimento>
+                    <div>
+                        <p>ÚLTIMA VALORIZAÇÃO</p>
+                        <span>{lastRendimento}</span>
+                    </div>
+                </LastRendimento>
+
                 <ChangeRendimento>
                     <button onClick={handleShowModal}>MUDAR RENDIMENTO</button>
                 </ChangeRendimento>
@@ -196,6 +226,33 @@ export default function Rendimentos() {
         </RendimentosContainer>
     );
 }
+
+
+const LastRendimento = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+
+    div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        flex-direction: column;
+
+        p{
+            margin: 0;
+            color: white;
+            font-weight: 600;
+        }
+
+        span{
+            color: white;
+        }
+    }
+`;
+
 const ModalRodarRendimento = styled.div`
     position: fixed;
     top: 0;
