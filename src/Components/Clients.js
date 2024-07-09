@@ -19,8 +19,8 @@ export default function Clientes() {
         ? users.filter(user => (user.NAME.includes(search.toUpperCase())) || (user.CPF.includes(search.toUpperCase())))
         : users;
 
-        console.log(users)
-    
+    console.log(users)
+
     const handlereateClient = () => {
         window.location.href = '/criarcliente';
     }
@@ -87,9 +87,9 @@ const ClientsContainer = styled.div`
     overflow:hidden;
     box-sizing: border-box;
     padding: 40px 40px;
-    background-color: rgba(22, 22, 22, 1);
+    background: linear-gradient(to right, #001D3D, #003566, #001D3D);
     color: #f2f2f2;
-
+    position: relative;
     @media (max-width: 915px){
         padding: 40px 20px;
     }
@@ -113,29 +113,37 @@ const AreaTitle = styled.h1`
     text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
     cursor: pointer;
     margin: 0;
+    transition: .3s;
+
+    &:hover{
+        text-shadow: 1px 1px 2px rgba(255,255,255,0);
+        color: #FFC300;
+        padding-left: 20px;
+    }
 `;
 
 const AddClient = styled.button`
     padding: 10px 20px;
     box-sizing: border-box;
-    background-color: #f96d00;
-    color: #f2f2f2;
+    background-color: #FFC300;
+    color: #000814;
     border: 0;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
     cursor: pointer;
     transition: .3s;
     &:hover{
-        background-color: #393e46;
-        color: #f96d00;
+        background-color: #000814;
+        color: #FFC300;
     }
 `;
 
 const Clients = styled.div`
     width: 100%;
-    background-color: #393e46; 
+    background: linear-gradient(to right, #003566, #001D3D , #003566);  
     box-sizing: border-box;
     margin-top: 50px;
     padding-bottom: 30px;
+    box-shadow: 3px 3px 1px black;
 
     @media (max-width: 915px){
         padding: 20px;
@@ -146,16 +154,17 @@ const SearchBar = styled.div`
     width: 100%;
     box-sizing: border-box;
     padding: 30px;
-
+    background: linear-gradient(to right, #003566, #001D3D , #003566); 
     input{
         box-sizing: border-box;
         width: 100%;
         height: 40px;
-        background-color: #222831;
+        background: linear-gradient(to right, #000814, #001D3D, #000814);
         border: 0;
         padding-left: 30px;
         box-shadow: 1px 1px 2px black;
-        color: #f2f2f2;
+        color: rgba(255, 195, 0, 1);
+        font-weight: 600;
         text-transform: uppercase;
     }
 
@@ -166,7 +175,7 @@ const SearchBar = styled.div`
 
 const ClientsTable = styled.div`
     width: 100%;
-    background-color: #393e46; 
+    background: linear-gradient(to right, #003566, #001D3D , #003566); 
     box-sizing: border-box;
     padding: 0 30px 0 30px;
     margin-top: 30px;
@@ -191,7 +200,6 @@ const TableContainer = styled.div`
     box-sizing: border-box;    
     overflow-y: scroll;
     overflow-x: scroll;
-
 `;
 
 const Table = styled.table`
@@ -201,30 +209,27 @@ const Table = styled.table`
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2);
     position: relative;
-
-    @media (max-width: 915px){
-    }
 `;
 
 const TableHeader = styled.thead`
-
     color: #f2f2f2;
 `;
 
 const TableRow = styled.tr`
-    background-color: #393e46;
-    color: #f2f2f2;
+    background: #000814; 
+    color: #FFC300;
+
     &:nth-child(even) {
-        color: #222831;
-        background-color: rgba(57, 62, 70, 0.8);
+        color: #FFC300;
+        background-color: #001D3D;
     }
 `;
 
 const TableHeaderCell = styled.th`
     padding: 15px;
     text-align: center;
-    color: #f2f2f2;
-    background-color: #222831;
+    color: #219ebc;
+    background-color: #001D3D;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     min-width: 100px; /* Ajuste conforme necessário */
     white-space: nowrap;

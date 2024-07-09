@@ -9,34 +9,34 @@ export default function Home() {
             <HomeContent>
                 <HomeOptions>
                     <StyledLink to="/depositos">
-                        <Option color="#58afb8">DEPOSITOS</Option>
+                        <Option color="#FFC300">DEPOSITOS</Option>
                     </StyledLink>                    
                     <StyledLink to="/">
-                        <Option color="#d2d2d2">HOME</Option>
+                        <Option color="#219ebc">HOME</Option>
                     </StyledLink>
                     <StyledLink to="/clientes">
-                        <Option color="#58afb8">CLIENTES</Option>
+                        <Option color="#FFC300">CLIENTES</Option>
                     </StyledLink>
                     <StyledLink to="/usuarios">
-                        <Option color="#d2d2d2">USUÁRIOS</Option>
+                        <Option color="#219ebc">USUÁRIOS</Option>
                     </StyledLink>
                     <StyledLink to="/contratos">
-                        <Option color="#58afb8">CONTRATOS</Option>
+                        <Option color="#FFC300">CONTRATOS</Option>
                     </StyledLink>
                     <StyledLink to="/saques">
-                        <Option color="#d2d2d2">SAQUES</Option>
+                        <Option color="#219ebc">SAQUES</Option>
                     </StyledLink>
                     {/* <StyledLink to="/configuracoes">
-                        <Option color="#58afb8">CONFIGURAÇÕES</Option>
+                        <Option color="#FFC300">CONFIGURAÇÕES</Option>
                     </StyledLink> */}
                     <StyledLink to="/validacao">
-                        <Option color="#58afb8">VALIDAÇÃO DE DOCUMENTOS</Option>
+                        <Option color="#FFC300">VALIDAÇÃO DE DOCUMENTOS</Option>
                     </StyledLink>
                     <StyledLink to="/noticias">
-                        <Option color="#d2d2d2">NOTÍCIAS</Option>
+                        <Option color="#219ebc">NOTÍCIAS</Option>
                     </StyledLink>
                     <StyledLink to="/rendimentos">
-                        <Option color="#58afb8">RODAR RENDIMENTO DIÁRIO</Option>
+                        <Option color="#FFC300">RODAR RENDIMENTO DIÁRIO</Option>
                     </StyledLink>
                 </HomeOptions>
 
@@ -50,7 +50,7 @@ export default function Home() {
 
 const HomeContainer = styled.div`
     width: 100%;
-    background-color: #222831;
+    background: linear-gradient(to right, #001D3D, #003566, #001D3D);
     height: 100vh;
     overflow-y: scroll;
     padding-top: 40px;
@@ -113,7 +113,8 @@ const Option = styled.div`
     align-items: center;
     font-size: 22px;
     transition: .3s;
-
+    color: rgba(0,0,0,0.7);
+    font-weight: 600;
     &:hover{
         transform: scale(1.05);
     }

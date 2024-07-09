@@ -167,11 +167,11 @@ const CreateNewsContainer = styled.div`
     box-sizing: border-box;
     align-items: center;
     position: relative;
-    background-color: rgba(255,255,255,0.5);
+    background: linear-gradient(to right, #001D3D, #003566, #001D3D);
 `;
 
 const CreateNewsContent = styled.div`
-    width: 1400px;
+    width: 100%;
     height: max-content;
     box-sizing: border-box;
     padding: 30px;
@@ -206,6 +206,7 @@ const TitleComponent = styled.div`
         }
     }
 `;
+
 const ModalComponentContainer = styled.div`
     width: 100%;
     height: 100%;
@@ -217,22 +218,32 @@ const ModalComponentContainer = styled.div`
     align-items: center;
     box-sizing: border-box;
     padding: 40px;
+
+    @media (max-width: 1200px){
+        padding: 10px;
+    }
 `;
 
 const ModalContent = styled.div`
-    width: 80%;
+    width: 90%;
     height: 800px;
     overflow-y: scroll;
     overflow-x: hidden;
-    border-radius: 8px;
+    border-radius: 3px;
     box-shadow: 2px 2px 3px rgba(0,0,0,0.4);
-    background-color: rgba(255,255,255,1);
+    background: linear-gradient(to right, #003566, #001D3D, #003566);
     padding: 20px;
     position: relative;
 
     h6 {
         font-size: 38px;
         margin: 0;
+        color: #FFC300;
+    }
+
+    @media (max-width: 1200px){
+        height: 700px;
+        padding: 10px;
     }
 `;
 
@@ -257,12 +268,12 @@ const NewsBox = styled.div`
 `;
 
 const PhotoInputBox = styled.div`
-    width: 80%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 500px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: #001D3D;
     position: relative;
     box-sizing: border-box;
     cursor: pointer;
@@ -280,7 +291,7 @@ const PhotoInputBox = styled.div`
     }
 
     &:hover{
-        background-color: rgba(250, 154, 49, 0.8);
+        background-color: rgba(255, 195, 0, 1);
     }
 
     img {
@@ -295,7 +306,7 @@ const PhotoInputBox = styled.div`
 `;
 
 const NewsInfo = styled.div`
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -313,9 +324,10 @@ const NewsTitle = styled.div`
 
     span{
         font-size: 28px;
-        color: rgba(0,0,0,0.8);
+        color: white;
         font-weight: 600;
         text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        margin-bottom: 5px;
     }
 
     input{
@@ -338,8 +350,9 @@ const NewsBody = styled.div`
 
     span{
         font-size: 28px;
-        color: rgba(0,0,0,0.8);
+
         font-weight: 600;
+        color: white;
         text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     }
 
@@ -357,6 +370,7 @@ const NewsBody = styled.div`
     h4{
         margin: 0;
         margin-top: 10px;
+        color: white;
         margin-bottom: 10px;
     }
 
@@ -374,7 +388,8 @@ const NewsBody = styled.div`
 
             &:hover{
                 border: 2px solid black;
-                background-color: transparent;
+                background-color: #001D3D;
+                color: white;
             }
         }
 
@@ -384,6 +399,10 @@ const NewsBody = styled.div`
 
         .center, .justified{
             background-color: rgba(18, 147, 247, 0.8);
+        }
+
+        @media (max-width: 1200px){
+            flex-direction: column;
         }
 
     }
@@ -408,7 +427,7 @@ const SendNewsBox = styled.div`
         &:hover{
             border: 2px solid black;
             background-color: transparent;
-            color: black;
+            color: #FFC300;
         }
     }
 `;

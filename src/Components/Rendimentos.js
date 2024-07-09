@@ -450,7 +450,7 @@ const ModalMudarRendimentoBox = styled.div`
 
 const RendimentosContainer = styled.div`
     width: 100%;
-    background-color: #222831;
+    background: linear-gradient(to right, #001D3D, #003566, #001D3D);
     height: 100vh;
     overflow-y: scroll;
     padding-top: 40px;

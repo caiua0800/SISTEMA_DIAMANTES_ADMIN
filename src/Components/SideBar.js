@@ -59,7 +59,7 @@ const SideBarAbsolute = styled.div`
 `;
 
 const SideBarContainer = styled.div`
-  background-color: #222831;
+  background-color: #001D3D;
   width: ${({ expanded }) => (expanded ? "350px" : "0px")};
   height: calc(100vh - 50px);
   display: flex;
@@ -74,7 +74,7 @@ const SideBarContainer = styled.div`
 
 const LogoContainer = styled.div`
   width: 100%;
-  background: #222831;
+  background: rgba(0, 8, 20, 0.5);
   height: 80px;
   display: flex;
   justify-content: center;
@@ -107,7 +107,7 @@ const NavItemsContainer = styled.div`
 const NavItem = styled.div`
   width: 100%;
   height: 50px;
-  background: #f2f2f2;
+  background: #FFC300;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +132,7 @@ const NavItem = styled.div`
   }
 
   &:hover {
-    background: #222831;
+    background: #001D3D;
     color: rgba(255,255,255,1);
     transform: scale(1.05);
   }
@@ -141,7 +141,7 @@ const NavItem = styled.div`
 const NavFooter = styled.div`
   width: 100%;
   height: 80px;
-  background-color: rgba(19, 19, 19, 0.8);
+  background-color: rgba(0, 8, 20, 0.5);;
   display: flex;
   align-items: center;
   color: rgba(255, 255, 255, 0.6);
@@ -160,7 +160,7 @@ const NavFooter = styled.div`
 const ToggleButton = styled.button`
   width: 100%;
   height: 50px;
-  background-color: ${({ expanded }) => (expanded ? "#393e46" : "transparent")};
+  background-color: ${({ expanded }) => (expanded ? "rgba(0, 8, 20, 1);" : "transparent")};
   // box-shadow: 2px 0px 2px rgba(0,0,0,0.6);
   color: #233142;
   font-weight: 600;
