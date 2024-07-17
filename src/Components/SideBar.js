@@ -107,7 +107,7 @@ const NavItemsContainer = styled.div`
 const NavItem = styled.div`
   width: 100%;
   height: 50px;
-  background: #FFC300;
+  background: #219ebc;
   display: flex;
   align-items: center;
   justify-content: center;

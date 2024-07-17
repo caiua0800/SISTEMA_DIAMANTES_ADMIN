@@ -25,7 +25,6 @@ const NAV_LINKS = [
   { name: "Contratos", path: "/contratos" },
   { name: "Depósitos", path: "/depositos" },
   { name: "Saques", path: "/saques" },
-  // { name: "Configurações", path: "/configuracoes" },
   { name: "Validação Doc.", path: "/validacao" },
   { name: "Notícias", path: "/noticias" },
   { name: "Rendimentos", path: "/rendimentos" }

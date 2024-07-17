@@ -16,7 +16,7 @@ export default function Saques() {
     const [modalOpen, setModalOpen] = useState(false);
     const [userINFOMODAL, setUserINFOMODAL] = useState({})
     const [modalData, setModalData] = useState({
-        metodoPagamento: '',
+        metodoPagamento: 'TED',
         aprovarTransacao: 'APROVAR SAQUE',
         responsavelEmail: '',
         responsavelSenha: '',
@@ -89,7 +89,7 @@ export default function Saques() {
     const closeModal = () => {
         setModalOpen(false);
         setModalData({
-            metodoPagamento: '',
+            metodoPagamento: 'TED',
             aprovarTransacao: 'APROVAR SAQUE',
             responsavelEmail: '',
             responsavelSenha: '',
