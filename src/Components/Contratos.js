@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDepositos, getTotalValorSacado, consultarALLOWSELL } from '../redux/actions';
 import { formatNumber } from "./ASSETS/assets";
 
+
+
 export default function Contratos() {
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState(''); // Estado para filtro por status
@@ -12,16 +14,14 @@ export default function Contratos() {
     const [total, setTotal] = useState(0);
     const [totalDeGanhos, setTotalDeGanhos] = useState(0);
     const [totalCOINS, setTotalCOINS] = useState(0);
-    const [totalGanhos, setTotalGanhos] = useState(0);
-    const taxa = 0.3;
-    const coinAtualPrice = 158.36;
+
     const dispatch = useDispatch();
     const depositos = useSelector((state) => state.DepositosReducer.depositos);
     const [totalSacado, setTotalSacado] = useState(0);
 
     useEffect(() => {
         dispatch(getDepositos());
-        
+
         async function fetchTotalValorSacado() {
             const total = await getTotalValorSacado();
             setTotalSacado(total);
@@ -33,14 +33,14 @@ export default function Contratos() {
 
     const filteredClients = depositos.filter(user => {
         const matchesSearch = (user.NAME && user.NAME.toUpperCase().includes(search.toUpperCase())) ||
-                             (user.ID && user.ID.toUpperCase().includes(search.toUpperCase()));
+            (user.ID && user.ID.toUpperCase().includes(search.toUpperCase()));
         const matchesStatus = statusFilter === '' ||
-                              (statusFilter === 'PAGOS' && user.STATUS) ||
-                              (statusFilter === 'NÃO PAGOS' && !user.STATUS);
+            (statusFilter === 'PAGOS' && user.STATUS) ||
+            (statusFilter === 'NÃO PAGOS' && !user.STATUS);
         const matchesDataInicial = dataInicialCompraFilter === '' ||
-                                   (user.PURCHASEDATE && user.PURCHASEDATE >= dataInicialCompraFilter);
+            (user.PURCHASEDATE && user.PURCHASEDATE >= dataInicialCompraFilter);
         const matchesDataFinal = dataFinalCompraFilter === '' ||
-                                 (user.PURCHASEDATE && user.PURCHASEDATE <= dataFinalCompraFilter);
+            (user.PURCHASEDATE && user.PURCHASEDATE <= dataFinalCompraFilter);
         return matchesSearch && matchesStatus && matchesDataInicial && matchesDataFinal;
     });
 
@@ -65,9 +65,9 @@ export default function Contratos() {
         filteredClients.forEach(user => {
             if (user.STATUS) {
                 sum += user.TOTALSPENT;
-                sum2 += ((user.TOTALSPENT*(user.LUCRO_OBTIDO / 100)))
+                sum2 += ((user.TOTALSPENT * (user.LUCRO_OBTIDO / 100)))
 
-                if(consultarALLOWSELL(user.ALLOWSELL))
+                if (consultarALLOWSELL(user.ALLOWSELL))
                     sum3 += user.COINS;
             }
         });
@@ -88,16 +88,11 @@ export default function Contratos() {
                             <span>$ {formatNumber(total)}</span>
                         </BoxContent>
                     </Box>
-                    {/* <Box bgColor="#f2f2f2">
-                        <BoxContent>
-                            <BoxTitle>VALOR TOTAL COM TAXA</BoxTitle>
-                            <span>$ {formatNumber(totalTaxa)}</span>
-                        </BoxContent>
-                    </Box> */}
+
                     <Box bgColor="#f2f2f2">
                         <BoxContent>
                             <BoxTitle>QUANTIDADE TOTAL DE TOKENS</BoxTitle>
-                            <span>{ parseInt(totalCOINS)}</span>
+                            <span>{parseInt(totalCOINS)}</span>
                         </BoxContent>
                     </Box>
                     <Box bgColor="#f2f2f2">
@@ -164,8 +159,7 @@ export default function Contratos() {
                                 <TableCell>$ {user.COINVALUE}</TableCell>
                                 <TableCell>$ {formatNumber(user.TOTALSPENT)}</TableCell>
                                 <TableCell>$ {formatNumber((user.TOTALSPENT * (user.LUCRO_OBTIDO / 100)))}</TableCell>
-                                {/* <TableCell>00/00/0000</TableCell> */}
-                                <TableCell>{user.STATUS ? 'ACEITO' : 'NEGADO'}</TableCell>
+                                <TableCell>{consultarALLOWSELL(user.ALLOWSELL) ? 'Valorizando' : 'Contrato Finalizado'}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

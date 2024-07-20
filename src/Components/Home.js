@@ -9,7 +9,7 @@ export default function Home() {
             <HomeContent>
                 <HomeOptions>
                     <StyledLink to="/depositos">
-                        <Option color="#FFC300">DEPOSITOS</Option>
+                        <Option color="#FFC300">VALIDAR DEPOSITOS</Option>
                     </StyledLink>                    
                     <StyledLink to="/">
                         <Option color="#219ebc">HOME</Option>
@@ -24,7 +24,10 @@ export default function Home() {
                         <Option color="#FFC300">CONTRATOS</Option>
                     </StyledLink>
                     <StyledLink to="/saques">
-                        <Option color="#219ebc">SAQUES</Option>
+                        <Option color="#219ebc">VALIDAR SAQUES</Option>
+                    </StyledLink>
+                    <StyledLink to="/saquesFeitos">
+                        <Option color="#219ebc">OPERAÇÕES DE SAQUES</Option>
                     </StyledLink>
                     {/* <StyledLink to="/configuracoes">
                         <Option color="#FFC300">CONFIGURAÇÕES</Option>
@@ -36,7 +39,7 @@ export default function Home() {
                         <Option color="#219ebc">NOTÍCIAS</Option>
                     </StyledLink>
                     <StyledLink to="/rendimentos">
-                        <Option color="#FFC300">RODAR RENDIMENTO DIÁRIO</Option>
+                        <Option color="#219ebc">RODAR RENDIMENTO DIÁRIO</Option>
                     </StyledLink>
                 </HomeOptions>
 

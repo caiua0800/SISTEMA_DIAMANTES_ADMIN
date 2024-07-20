@@ -82,9 +82,6 @@ export default function Saques() {
         dispatch(getSaques());
     };
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
 
     const closeModal = () => {
         setModalOpen(false);
@@ -111,7 +108,7 @@ export default function Saques() {
     return (
         <SaquesContainer>
             <SaquesFirstContent>
-                <AreaTitle>SAQUES</AreaTitle>
+                <AreaTitle>VALIDAR SAQUES</AreaTitle>
                 {/* <AddSaques onClick={openModal}>+ REALIZAR NOVO SAQUE</AddSaques> */}
             </SaquesFirstContent>
 
@@ -126,7 +123,7 @@ export default function Saques() {
                 </SearchBar>
 
                 <ReloadData>
-                    <p onClick={handleReload}><img src={reloadIcon} alt="https://firebasestorage.googleapis.com/v0/b/wldata.appspot.com/o/reload-svgrepo-com.png?alt=media&token=239c954a-c1fc-4829-839e-694b067a90f5" /></p>
+                    <p onClick={handleReload}><img src={reloadIcon} alt="RELOAD" /></p>
                 </ReloadData>
 
                 <SaquesTable>
@@ -616,6 +613,26 @@ const ReloadData = styled.div`
 
             &:hover{
                 transform: scale(1.3);
+            }
+        }
+    }
+
+    @media(max-width: 1200px){
+        align-items: end;
+        justify-content: end;
+        padding-top: 20px;
+
+        p{
+            padding-right: 0px;
+            cursor: pointer;
+
+            img{
+                width: 30px;
+                transition: .3s;
+
+                &:hover{
+                    transform: scale(1.3);
+                }
             }
         }
     }

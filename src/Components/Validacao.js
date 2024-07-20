@@ -15,6 +15,7 @@ const firebaseConfig = {
     appId: "1:86184173654:web:9463c36b71d142b684dbf7"
 };
 
+const reloadIcon = 'https://firebasestorage.googleapis.com/v0/b/wldata.appspot.com/o/reload-svgrepo-com%20(1).png?alt=media&token=c99468e4-47db-4616-8788-540ef032113e'
 
 firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
@@ -90,6 +91,10 @@ export default function Validacao() {
         }
     };
 
+    const handleReload = () => {
+        getClients(setUsers);
+    };
+
     return (
         <ClientsContainer>
             <ClientFirstContent>
@@ -105,6 +110,9 @@ export default function Validacao() {
                         placeholder="Nome do Cliente"
                     />
                 </SearchBar>
+                <ReloadData>
+                    <p onClick={handleReload}><img src={reloadIcon} alt="RELOAD" /></p>
+                </ReloadData>
 
                 <ClientsTable>
                     <TableContainer>
@@ -316,5 +324,27 @@ const OptionsVerificacao = styled.div`
     display: flex;
     justify-content: center;
     gap: 2px;
+
+`;
+
+const ReloadData = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: end;
+
+    p{
+        margin: 0;
+        padding-right: 60px;
+        cursor: pointer;
+
+        img{
+            width: 30px;
+            transition: .3s;
+
+            &:hover{
+                transform: scale(1.3);
+            }
+        }
+    }
 
 `;

@@ -14,11 +14,12 @@ export default function Rendimentos() {
     const [daysInMonth, setDaysInMonth] = useState(30);
     const [adminEmail, setAdminEmail] = useState('');
     const [adminPassword, setAdminPassword] = useState('');
-    const [lastRendimento, setLastRendimento] = useState('');
+    const [lastRendimento, setLastRendimento] = useState({});
     const [load, setLoad] = useState(false);
 
     async function fetchRendimentoMensal() {
         setLoad(true);
+        console.log('Fetching rendimento mensal...');
         try {
             const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'RENDIMENTO');
             const rendimentoDoc = await getDoc(rendimentoDocRef);
@@ -26,9 +27,9 @@ export default function Rendimentos() {
             if (rendimentoDoc.exists()) {
                 const rendimentoData = rendimentoDoc.data();
                 setRendimentoAtual(rendimentoData.RENDIMENTO_MENSAL);
+                console.log('Rendimento mensal fetched:', rendimentoData.RENDIMENTO_MENSAL);
                 setLoad(false);
 
-                // Obter o número de dias no mês atual
                 const today = new Date();
                 const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
                 const days = lastDayOfMonth.getDate();
@@ -45,13 +46,15 @@ export default function Rendimentos() {
 
     async function fetchLastRendimento() {
         setLoad(true);
+        console.log('Fetching last rendimento...');
         try {
             const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'ULTIMA_VALORIZACAO');
             const rendimentoDoc = await getDoc(rendimentoDocRef);
 
             if (rendimentoDoc.exists()) {
                 const ULTIMA_VALORIZACAOData = rendimentoDoc.data();
-                setLastRendimento( (ULTIMA_VALORIZACAOData.PERCENTUAL*100)+'%' + ' => ' + ULTIMA_VALORIZACAOData.DATA + ' - ' + ULTIMA_VALORIZACAOData.HORA);
+                setLastRendimento({porcentagem: ULTIMA_VALORIZACAOData.PERCENTUAL, data: ULTIMA_VALORIZACAOData.DATA, hora: ULTIMA_VALORIZACAOData.HORA } );
+                console.log('Last rendimento fetched:', ULTIMA_VALORIZACAOData);
                 setLoad(false);
 
             } else {
@@ -75,7 +78,7 @@ export default function Rendimentos() {
 
     const handleSaveRendimento = async () => {
         setLoad(true);
-
+        console.log('Saving rendimento...');
         try {
             const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'RENDIMENTO');
             await updateDoc(rendimentoDocRef, {
@@ -83,6 +86,7 @@ export default function Rendimentos() {
             });
             setRendimentoAtual(parseFloat(modalValue));
             handleHideModal();
+            console.log('Rendimento saved:', modalValue);
             setLoad(false);
 
         } catch (error) {
@@ -94,7 +98,7 @@ export default function Rendimentos() {
 
     const handleSaveLastRendimento = async () => {
         setLoad(true);
-    
+        console.log('Saving last rendimento...');
         try {
             const rendimentoDocRef = doc(db, 'SYSTEM_VARIABLES', 'ULTIMA_VALORIZACAO');
             
@@ -119,6 +123,7 @@ export default function Rendimentos() {
     
             setRendimentoAtual(parseFloat(modalValue));
             handleHideModal();
+            console.log('Last rendimento saved:', modalValue);
             setLoad(false);
     
         } catch (error) {
@@ -126,8 +131,6 @@ export default function Rendimentos() {
             setLoad(false);
         }
     };
-    
-    
 
     const handleShowModal = () => {
         setModalValue(rendimentoAtual);
@@ -140,10 +143,11 @@ export default function Rendimentos() {
 
     const handleLoginAndRun = async () => {
         setLoad(true);
+        console.log('Attempting to login and run...');
         try {
             const auth = getAuth();
             const userCredential = await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
-            console.log('ok'); // Imprime 'ok' no console se o login for bem-sucedido
+            console.log('Login successful');
             setModalRendimentoShow(false); // Fecha o modal após login bem-sucedido
     
             const usersCollectionRef = collection(db, 'USERS');
@@ -189,10 +193,6 @@ export default function Rendimentos() {
         fetchLastRendimento();
     }, []);
     
-    useEffect(() => {
-        fetchLastRendimento();
-    }, [lastRendimento]);
-    
 
 
     return (
@@ -219,7 +219,7 @@ export default function Rendimentos() {
                 <LastRendimento>
                     <div>
                         <p>ÚLTIMA VALORIZAÇÃO</p>
-                        <span>{lastRendimento}</span>
+                        <span>{lastRendimento.data + ' | ' + lastRendimento.hora + ' | ' + lastRendimento.porcentagem + '%'}</span>
                     </div>
                 </LastRendimento>
 
@@ -240,12 +240,9 @@ export default function Rendimentos() {
                             type="number"
                             value={modalValue}
                             onChange={(e) => setModalValue(e.target.value)}
-                            placeholder="%"
                         />
-                        <div>
-                            <button onClick={handleHideModal} className="cancelarBtn">CANCELAR</button>
-                            <button onClick={handleSaveRendimento} className="salvarBtn">SALVAR</button>
-                        </div>
+                        <button onClick={handleSaveRendimento}>SALVAR</button>
+                        <button onClick={handleHideModal}>FECHAR</button>
                     </ModalMudarRendimentoBox>
                 </ModalMudarRendimento>
             )}
@@ -253,32 +250,28 @@ export default function Rendimentos() {
             {modalRendimentoShow && (
                 <ModalRodarRendimento>
                     <ModalRodarRendimentoBox>
-                        <span className="fecharRodarRend" onClick={() => setModalRendimentoShow(false)}>x</span>
-                        <div className="rendimentoTitleModal">
-                            <h1>RODAR RENDIMENTO</h1>
-                        </div>
-                        <div className="informacoesAaplicar">
-                            <h4>Rendimento Mensal: {rendimentoAtual}%</h4>
-                            <h4>Rendimento Diário: {(rendimentoAtual / daysInMonth).toFixed(2)}%</h4>
-                        </div>
-                        <div>
-                            <div>
-                                <span>Email Admin</span>
-                                <input type="email" value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)} />
-                            </div>
-                            <div>
-                                <span>Senha Admin</span>
-                                <input type="password" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} />
-                            </div>
-                            <button onClick={handleLoginAndRun}>RODAR</button>
-                        </div>
+                        <h4>Autenticação de Administrador</h4>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={adminEmail}
+                            onChange={(e) => setAdminEmail(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Senha"
+                            value={adminPassword}
+                            onChange={(e) => setAdminPassword(e.target.value)}
+                        />
+                        <button onClick={handleLoginAndRun}>Autenticar e Rodar Rendimento</button>
+                        <button onClick={() => setModalRendimentoShow(false)}>Cancelar</button>
                     </ModalRodarRendimentoBox>
                 </ModalRodarRendimento>
             )}
-
         </RendimentosContainer>
     );
 }
+
 
 
 const LastRendimento = styled.div`

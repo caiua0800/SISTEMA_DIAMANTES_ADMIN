@@ -150,7 +150,7 @@ export default function Depositos() {
     return (
         <DepositosContainer>
             <DepositosFirstContent>
-                <AreaTitle>DEPÓSITOS</AreaTitle>
+                <AreaTitle>VALIDAÇÃO DE DEPÓSITOS</AreaTitle>
                 <AddDepositos onClick={handleShowModal}>+ REALIZAR NOVO DEPÓSITO</AddDepositos>
             </DepositosFirstContent>
 
@@ -178,7 +178,7 @@ export default function Depositos() {
                                     <TableHeaderCell>CELULAR</TableHeaderCell>
                                     <TableHeaderCell>DATA SOLICITAÇÃO</TableHeaderCell>
                                     <TableHeaderCell>PRAZO DE VALIDAÇÃO</TableHeaderCell>
-                                    <TableHeaderCell>COINS</TableHeaderCell>
+                                    <TableHeaderCell>TOKENS</TableHeaderCell>
                                     <TableHeaderCell>VALOR</TableHeaderCell>
                                     <TableHeaderCell>STATUS</TableHeaderCell>
                                     <TableHeaderCell>AÇÕES</TableHeaderCell>

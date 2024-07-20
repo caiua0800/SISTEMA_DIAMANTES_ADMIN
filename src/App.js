@@ -17,14 +17,16 @@ import Saques from './Components/Saques';
 import Validacao from './Components/Validacao';
 import CreateNews from './Components/CreateNews';
 import Rendimentos from './Components/Rendimentos';
+import SaquesFeitos from './Components/SaquesFeitos';
 
 const NAV_LINKS = [
   { name: "Home", path: "/" },
   { name: "Usuários", path: "/usuarios" },
   { name: "Clientes", path: "/clientes" },
   { name: "Contratos", path: "/contratos" },
-  { name: "Depósitos", path: "/depositos" },
-  { name: "Saques", path: "/saques" },
+  { name: "Validar Depósitos", path: "/depositos" },
+  { name: "Validar Saques", path: "/saques" },
+  { name: "Saques Feitos", path: "/saquesFeitos" },
   { name: "Validação Doc.", path: "/validacao" },
   { name: "Notícias", path: "/noticias" },
   { name: "Rendimentos", path: "/rendimentos" }
@@ -60,7 +62,7 @@ function App() {
               <Route path="/saques" element={<Saques />} />
               <Route path="/validacao" element={<Validacao />} />
               <Route path="/rendimentos" element={<Rendimentos />} />
-              {/* <Route path="/documentos" element={<Documentos />} /> */}
+              <Route path="/saquesFeitos" element={<SaquesFeitos />} />
             </Routes>
           </>
         ) : (

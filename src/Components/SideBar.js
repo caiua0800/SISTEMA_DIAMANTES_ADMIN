@@ -136,6 +136,17 @@ const NavItem = styled.div`
     color: rgba(255,255,255,1);
     transform: scale(1.05);
   }
+
+  @media (max-width: 1200px){
+    height: 40px;
+    background: transparent;
+
+    a{
+    
+      color: white;
+    }
+  
+  }
 `;
 
 const NavFooter = styled.div`
