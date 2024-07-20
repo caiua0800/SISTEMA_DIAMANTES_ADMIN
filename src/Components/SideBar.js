@@ -13,7 +13,7 @@ export default function SideBar({ NAV_LINKS }) {
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser()); // Dispara a action de logout
+    dispatch(logoutUser()); 
   };
 
   return (
@@ -43,7 +43,7 @@ export default function SideBar({ NAV_LINKS }) {
                 ))}
               </NavItemsContainer>
             </NavItemsWrapper>
-            <NavFooter onClick={handleLogout}>LOGOUT</NavFooter> {/* Adiciona o onClick para chamar handleLogout */}
+            <NavFooter onClick={handleLogout}>LOGOUT</NavFooter>
           </>
         )}
       </SideBarContainer>
